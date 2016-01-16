@@ -1,0 +1,20 @@
+[
+{
+  "modid": "twbb-tweaks",
+  "name": "TWBB Tweaks",
+  "description": "Various tweaks for the modpack 'There Will Be Blood'.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [
+    "Undead_Zeratul"
+  ],
+  "credits": "Undead_Zeratul, Pahimar for his Let's Mod Reboot series",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "dependencies": [
+  ]
+}
+]

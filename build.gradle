@@ -1,0 +1,213 @@
+def MAVEN_URL = System.getenv("maven_url") ?: ""
+def MAVEN_USER = System.getenv("maven_user") ?: ""
+def MAVEN_PASS = System.getenv("maven_pass") ?: ""
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+repositories {
+    maven { // The repo from which to get waila
+        name "Mobius Repo"
+        url "http://mobiusstrip.eu/maven"
+    }
+    maven { // the repo from which to get NEI and stuff 
+        name 'CB Repo'
+        url "http://chickenbones.net/maven/"
+    }
+    maven {
+        name = "IGW"
+        url = "http://maven.k-4u.nl/"
+    }
+    maven {
+        name 'OpenComputers'
+        url = "http://maven.cil.li/"
+    }
+    maven {
+        name 'DVS1 Maven FS'
+        url 'http://dvs1.progwml6.com/files/maven'
+    }
+    maven {
+        name 'Nincraft'
+        url 'http://play.nincraft.com/maven'
+    }
+
+    // This is a simple flatdir repository for "uploadArchives" when you don't have a remote repo to target
+    flatDir {
+        name "fileRepo"
+        dirs "repo"
+    }
+}
+
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+    // Load config.  It shall from now be referenced as simple config or poject.config
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+apply plugin: 'forge'
+
+// def versionInfo = getGitVersion()
+version = "${config.minecraft_version}-${config.mod_version}+${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}" // "${versionInfo['TWBB-Tweaks.version']}"
+
+group= "com.undeadzeratul" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "TWBBTweaks"
+
+minecraft {
+    version = config.minecraft_version + "-" + config.forge_version
+    runDir = "eclipse"
+    
+    replaceIn "reference/Reference.java"
+    replace "@MINECRAFT_VERSION@", "${config.minecraft_version}"
+    replace "@MOD_VERSION@", "${config.mod_version}+${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
+}
+
+dependencies {
+    // you may put jars on which you depend on in ./libs
+    // or you may define them like so..
+    //compile "some.group:artifact:version:classifier"
+    //compile "some.group:artifact:version"
+      
+    // real examples
+    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+    // for more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+    compile fileTree(dir: 'lib', include: '*.jar')
+    compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.cclib_version}:dev"
+    compile "codechicken:CodeChickenCore:${config.minecraft_version}-${config.cccore_version}:dev"
+    compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.nei_version}:dev"
+    compile "mcp.mobius.waila:Waila:${config.waila_version}_${config.minecraft_version}"
+    compile "tconstruct:TConstruct:${config.minecraft_version}-${config.tconstruct_version}:deobf"
+    compile "com.nincraft:NincraftLib:${config.minecraft_version}-${config.nincraftlib_version}"
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+// Configure an upload task. this is setup for uploading to files.minecraftforge.net. There are other examples around
+uploadArchives {
+    repositories.mavenDeployer {
+
+        dependsOn 'build'
+
+        if (MAVEN_URL)
+        {
+            repository(url: MAVEN_URL) {
+                authentication(userName: MAVEN_USER, password: MAVEN_PASS)
+            }
+        }
+        else
+        {
+            // local repo folder. Might want to just use gradle install if you want to send it to maven-local
+            repository(url: 'file://localhost/' + project.file('repo').getAbsolutePath())
+        }
+
+        // This is just the pom data for the maven repo
+        pom {
+            groupId = project.group
+            // Force the maven upload to use the <mcversion>-<version> syntax preferred at files
+            version = project.version // "${project.minecraft.version}-${project.version}"
+            artifactId = project.archivesBaseName
+            project {
+                name project.archivesBaseName
+                packaging 'jar'
+                description 'Nincrafty Things'
+                url 'https://github.com/UndeadZeratul/TWBB-Tweaks'
+
+                scm {
+                    url 'https://github.com/UndeadZeratul/TWBB-Tweaks'
+                    connection 'scm:git:git://github.com/UndeadZeratul/TWBB-Tweaks.git'
+                    developerConnection 'scm:git:git@github.com:UndeadZeratul/TWBB-Tweaks.git'
+                }
+
+                issueManagement {
+                    system 'github'
+                    url 'https://github.com/Undead_Zeratul/TWBB-Tweaks/issues'
+                }
+
+                licenses {
+                    license {
+                        name 'GNU Public License (GPL), Version 3.0'
+                        url 'http://www.gnu.org/licenses/gpl-3.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'Undead_Zeratul'
+                        name 'Undead_Zeratul'
+                        roles { role 'developer' }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// This is a special task for pulling the version information from git and the environment (for BUILD_NUMBER)
+def getGitVersion()
+{
+    def out = [:]
+
+    // call git command.
+    def outStream = new ByteArrayOutputStream()
+    def result = exec {
+        executable = 'git'
+        args = [ 'describe', '--long', "--match=[^(jenkins)]*"]
+        standardOutput = outStream
+    }
+
+    def fullVersion = outStream.toString().trim()
+    def matcher = fullVersion =~ /(\d+).(\d+)-(\d+)-(.*)/
+
+    def maj = matcher[0][1]
+    def min = matcher[0][2]
+    def rev = matcher[0][3]
+    def bn = System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"
+
+    out['TWBB-Tweaks.build.major.number'] = maj.toString()
+    out['TWBB-Tweaks.build.minor.number'] = min.toString()
+    out['TWBB-Tweaks.build.revision.number'] = rev.toString()
+    out['TWBB-Tweaks.build.githash'] = matcher[0][4].toString()
+    out['TWBB-Tweaks.build.number' ] = bn.toString()
+    out['TWBB-Tweaks.version' ] = "${maj}.${min}.${rev}.${bn}".toString()
+
+    return out
+}
