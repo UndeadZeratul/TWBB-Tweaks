@@ -4,7 +4,6 @@ import com.undeadzeratul.twbbtweaks.handler.ConfigurationHandler;
 import com.undeadzeratul.twbbtweaks.proxy.IProxy;
 import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
 import com.undeadzeratul.twbbtweaks.reference.Reference;
-import com.undeadzeratul.twbbtweaks.tweaks.BetterBeginningsTweaks;
 import com.undeadzeratul.twbbtweaks.tweaks.OreDictionaryRegister;
 import com.undeadzeratul.twbbtweaks.tweaks.TConstructTweaks;
 import com.undeadzeratul.twbbtweaks.utility.LogHelper;
