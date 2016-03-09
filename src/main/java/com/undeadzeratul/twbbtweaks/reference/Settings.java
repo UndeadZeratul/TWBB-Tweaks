@@ -4,6 +4,16 @@ import java.util.Map;
 
 public class Settings
 {
+    public static class BetterBeginnings
+    {
+        public static boolean disableBBSmelter;
+        public static boolean enableBBTweaks;
+        public static boolean nerfAllArmorRecipes;
+        public static boolean nerfAllMiscRecipes;
+        public static boolean nerfAllRecipes;
+        public static boolean nerfAllToolRecipes;
+    }
+
     public static class TConstruct
     {
         public static boolean              adjustMeltingTemps;

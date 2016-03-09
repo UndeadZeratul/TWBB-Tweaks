@@ -34,6 +34,7 @@ public class ConfigurationHandler
     {
         loadTweakConfigs(ConfigurationTwbbTweaks.CATEGORY_TWEAKS);
         loadTConstructConfigs(ConfigurationTwbbTweaks.CATEGORY_TCONSTRUCT);
+        loadBetterBeginningsConfigs(ConfigurationTwbbTweaks.CATEGORY_BETTER_BEGINNINGS);
 
         if (configuration.hasChanged())
         {
@@ -60,6 +61,34 @@ public class ConfigurationHandler
                             "Set this to true to alter the TiC tool part costs across the board.");
         Settings.TConstruct.meltingTemps = parseMeltingTempsConfig(category, "meltingTemps");
         Settings.TConstruct.toolPartCosts = parseToolPartCostsConfig(category, "toolPartCosts");
+    }
+
+    private static void loadBetterBeginningsConfigs (final String category)
+    {
+        Settings.BetterBeginnings.enableBBTweaks = configuration
+                .getBoolean("enableBBTweaks", category, true, "This will enable/disable all BetterBeginnings tweaks.");
+
+        Settings.BetterBeginnings.disableBBSmelter = configuration
+                .getBoolean("disableBBSmelter", category, true,
+                            "Set this to true to disable the use of the BetterBeginnings Smelter, to enforce the usage of the TiC Smeltery.");
+
+        loadBBRecipeNerfConfigs(category + ".recipeNerfs");
+    }
+
+    private static void loadBBRecipeNerfConfigs (final String category)
+    {
+        Settings.BetterBeginnings.nerfAllRecipes = configuration
+                .getBoolean("enableAllRecipeNerfs", category, true,
+                            "Set this to true to activate all recipe nerfs, making it so that any recipe nerfed will require the advanced crafting table.");
+        Settings.BetterBeginnings.nerfAllArmorRecipes = configuration
+                .getBoolean("nerfAllArmorRecipes", category, true,
+                            "Set this to true to nerf all armor recipes to require the advanced crafting table.");
+        Settings.BetterBeginnings.nerfAllToolRecipes = configuration
+                .getBoolean("nerfAllToolRecipes", category, true,
+                            "Set this to true to nerf all tool recipes to require the advanced crafting table.");
+        Settings.BetterBeginnings.nerfAllMiscRecipes = configuration
+                .getBoolean("nerfAllMiscRecipes", category, true,
+                            "Set this to true to nerf other random recipes to require the advanced crafting table.");
     }
 
     private static Map<String, Integer> parseMeltingTempsConfig (final String category, final String configKey)
