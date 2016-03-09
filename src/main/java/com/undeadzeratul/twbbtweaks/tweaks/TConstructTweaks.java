@@ -1,13 +1,11 @@
 package com.undeadzeratul.twbbtweaks.tweaks;
 
-import static com.nincraft.nincraftlib.handler.TConstructHandler.setMeltingTemp;
-import static com.nincraft.nincraftlib.handler.TConstructHandler.setToolPartCost;
-
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.nincraft.nincraftlib.handler.TConstructHandler;
 import com.undeadzeratul.twbbtweaks.reference.Settings;
 
 import net.minecraftforge.fluids.FluidRegistry;
@@ -64,7 +62,7 @@ public class TConstructTweaks
     {
         for (final String fluidName : buildFluidDictEntries(Settings.TConstruct.meltingTemps.keySet()))
         {
-            setMeltingTemp(fluidName, Settings.TConstruct.meltingTemps.get(fluidName));
+            TConstructHandler.setMeltingTemp(fluidName, Settings.TConstruct.meltingTemps.get(fluidName));
         }
     }
 
@@ -102,7 +100,8 @@ public class TConstructTweaks
     {
         for (final Integer toolPartIndex : buildToolPartEntries(Settings.TConstruct.toolPartCosts.keySet()))
         {
-            setToolPartCost(toolPartIndex, Settings.TConstruct.toolPartCosts.get(patternNames.get(toolPartIndex)));
+            TConstructHandler.setToolPartCost(toolPartIndex,
+                                              Settings.TConstruct.toolPartCosts.get(patternNames.get(toolPartIndex)));
         }
     }
 

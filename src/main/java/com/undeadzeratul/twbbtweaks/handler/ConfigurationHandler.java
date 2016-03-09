@@ -116,7 +116,7 @@ public class ConfigurationHandler
                 }
                 else
                 {
-                    LogHelper.warn(String.format("Invalid config option: {}", entryData[0]));
+                    LogHelper.warn(String.format("Invalid config option: %s", entryData[0]));
                 }
             }
         }
