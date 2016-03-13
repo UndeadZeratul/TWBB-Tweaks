@@ -53,7 +53,6 @@ public class TwbbTweaks
     @Mod.EventHandler
     public void init (final FMLInitializationEvent event)
     {
-        initBetterBeginningsCompat();
         LogHelper.info("Init Complete");
     }
 
@@ -65,6 +64,7 @@ public class TwbbTweaks
     @Mod.EventHandler
     public void postInit (final FMLPostInitializationEvent event)
     {
+        initBetterBeginningsCompat();
         initTConstructCompat();
         LogHelper.info("Post-Init Complete");
     }
