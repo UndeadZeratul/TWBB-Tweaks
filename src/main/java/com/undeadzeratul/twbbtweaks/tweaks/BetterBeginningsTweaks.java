@@ -7,7 +7,6 @@ import com.undeadzeratul.twbbtweaks.handler.BetterBeginningsHandler;
 import com.undeadzeratul.twbbtweaks.handler.CraftingRecipeHandler;
 import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
 import com.undeadzeratul.twbbtweaks.reference.Settings;
-import com.undeadzeratul.twbbtweaks.utility.LogHelper;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameData;
@@ -94,69 +93,33 @@ public class BetterBeginningsTweaks
     {
         ItemStack gildedGoldIngot = new ItemStack(GameRegistry.findItem(ModIds.FSP, "steamcraftIngot"), 1, 3);
 
-        ItemStack gildedGoldHelmet = new ItemStack(GameRegistry.findItem(ModIds.FSP, "helmGildedGold"));
-        ItemStack gildedGoldChestPlate = new ItemStack(GameRegistry.findItem(ModIds.FSP, "chestGildedGold"));
-        ItemStack gildedGoldLeggings = new ItemStack(GameRegistry.findItem(ModIds.FSP, "legsGildedGold"));
-        ItemStack gildedGoldBoots = new ItemStack(GameRegistry.findItem(ModIds.FSP, "feetGildedGold"));
-
-        CraftingRecipeHandler.removeCraftingRecipe(gildedGoldHelmet);
-        CraftingRecipeHandler.removeCraftingRecipe(gildedGoldChestPlate);
-        CraftingRecipeHandler.removeCraftingRecipe(gildedGoldLeggings);
-        CraftingRecipeHandler.removeCraftingRecipe(gildedGoldBoots);
-
-        BetterBeginningsHandler.addNerfedHelmetRecipe(gildedGoldHelmet, gildedGoldIngot, ANY_IRON_NUGGET);
-        BetterBeginningsHandler.addNerfedChestplateRecipe(gildedGoldChestPlate, gildedGoldIngot, ANY_IRON_NUGGET);
-        BetterBeginningsHandler.addNerfedLeggingsRecipe(gildedGoldLeggings, gildedGoldIngot, ANY_IRON_NUGGET);
-        BetterBeginningsHandler.addNerfedBootsRecipe(gildedGoldBoots, gildedGoldIngot, ANY_IRON_NUGGET);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "helmGildedGold")), gildedGoldIngot, ANY_IRON_NUGGET);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "chestGildedGold")), gildedGoldIngot, ANY_IRON_NUGGET);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "legsGildedGold")), gildedGoldIngot, ANY_IRON_NUGGET);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "feetGildedGold")), gildedGoldIngot, ANY_IRON_NUGGET);
     }
 
     private static void nerfChainArmor ()
     {
+        Object mainCost = Loader.isModLoaded(ModIds.MINE_AND_BLADE)
+                ? new ItemStack(GameRegistry.findItem(ModIds.MINE_AND_BLADE, "chain"))
+                : ANY_IRON_NUGGET;
+        Object additionalCost = Loader.isModLoaded(ModIds.MINE_AND_BLADE)
+                ? ANY_IRON_NUGGET
+                : StringUtils.EMPTY;
 
-        ItemStack chainmailHelmet = new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "chainmail_helmet"));
-        ItemStack chainmailChestplate = new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "chainmail_chestplate"));
-        ItemStack chainmailLeggings = new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "chainmail_leggings"));
-        ItemStack chainmailBoots = new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "chainmail_boots"));
-
-        CraftingRecipeHandler.removeCraftingRecipe(chainmailHelmet);
-        CraftingRecipeHandler.removeCraftingRecipe(chainmailChestplate);
-        CraftingRecipeHandler.removeCraftingRecipe(chainmailLeggings);
-        CraftingRecipeHandler.removeCraftingRecipe(chainmailBoots);
-
-        if (Loader.isModLoaded(ModIds.MINE_AND_BLADE))
-        {
-            ItemStack chain = new ItemStack(GameRegistry.findItem(ModIds.MINE_AND_BLADE, "chain"));
-
-            BetterBeginningsHandler.addNerfedHelmetRecipe(chainmailHelmet, chain, ANY_IRON_NUGGET);
-            BetterBeginningsHandler.addNerfedChestplateRecipe(chainmailChestplate, chain, ANY_IRON_NUGGET);
-            BetterBeginningsHandler.addNerfedLeggingsRecipe(chainmailLeggings, chain, ANY_IRON_NUGGET);
-            BetterBeginningsHandler.addNerfedBootsRecipe(chainmailBoots, chain, ANY_IRON_NUGGET);
-        }
-        else
-        {
-            BetterBeginningsHandler.addNerfedHelmetRecipe(chainmailHelmet, ANY_IRON_NUGGET, StringUtils.EMPTY);
-            BetterBeginningsHandler.addNerfedChestplateRecipe(chainmailChestplate, ANY_IRON_NUGGET, StringUtils.EMPTY);
-            BetterBeginningsHandler.addNerfedLeggingsRecipe(chainmailLeggings, ANY_IRON_NUGGET, StringUtils.EMPTY);
-            BetterBeginningsHandler.addNerfedBootsRecipe(chainmailBoots, ANY_IRON_NUGGET, StringUtils.EMPTY);
-        }
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "chainmail_helmet")), mainCost, additionalCost);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "chainmail_chestplate")), mainCost, additionalCost);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "chainmail_leggings")), mainCost, additionalCost);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "chainmail_boots")), mainCost, additionalCost);
     }
 
     private static void nerfTconstructArmor ()
     {
-        ItemStack woodHelmet = new ItemStack(GameRegistry.findItem(ModIds.TIC, "helmetWood"));
-        ItemStack woodChestplate = new ItemStack(GameRegistry.findItem(ModIds.TIC, "chestplateWood"));
-        ItemStack woodLeggings = new ItemStack(GameRegistry.findItem(ModIds.TIC, "leggingsWood"));
-        ItemStack woodBoots = new ItemStack(GameRegistry.findItem(ModIds.TIC, "bootsWood"));
-
-        CraftingRecipeHandler.removeCraftingRecipe(woodHelmet);
-        CraftingRecipeHandler.removeCraftingRecipe(woodChestplate);
-        CraftingRecipeHandler.removeCraftingRecipe(woodLeggings);
-        CraftingRecipeHandler.removeCraftingRecipe(woodBoots);
-
-        BetterBeginningsHandler.addNerfedHelmetRecipe(woodHelmet, ANY_WOOD_LOG, ANY_STICK);
-        BetterBeginningsHandler.addNerfedChestplateRecipe(woodChestplate, ANY_WOOD_LOG, ANY_STICK);
-        BetterBeginningsHandler.addNerfedLeggingsRecipe(woodLeggings, ANY_WOOD_LOG, ANY_STICK);
-        BetterBeginningsHandler.addNerfedBootsRecipe(woodBoots, ANY_WOOD_LOG, ANY_STICK);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.TIC, "helmetWood")), ANY_WOOD_LOG, ANY_STICK);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.TIC, "chestplateWood")), ANY_WOOD_LOG, ANY_STICK);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.TIC, "leggingsWood")), ANY_WOOD_LOG, ANY_STICK);
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.TIC, "bootsWood")), ANY_WOOD_LOG, ANY_STICK);
     }
 
     private static void nerfStandardArmorRecipes ()
@@ -180,32 +143,19 @@ public class BetterBeginningsTweaks
                             ? repairMaterial
                             : "nugget" + repairMaterial;
 
-                    if (!OreDictionary.getOres(ingot).isEmpty() && !OreDictionary.getOres(nugget).isEmpty())
+                    if (!OreDictionary.getOres(ingot).isEmpty() && !OreDictionary.getOres(nugget).isEmpty() && outputStack.getItem() instanceof ItemArmor)
                     {
-                        CraftingRecipeHandler.removeCraftingRecipe(outputStack);
-
-                        switch (armor.armorType)
-                        {
-                            case 0:
-                                BetterBeginningsHandler.addNerfedHelmetRecipe(outputStack, ingot, nugget);
-                                break;
-                            case 1:
-                                BetterBeginningsHandler.addNerfedChestplateRecipe(outputStack, ingot, nugget);
-                                break;
-                            case 2:
-                                BetterBeginningsHandler.addNerfedLeggingsRecipe(outputStack, ingot, nugget);
-                                break;
-                            case 3:
-                                BetterBeginningsHandler.addNerfedBootsRecipe(outputStack, ingot, nugget);
-                                break;
-                            default:
-                                LogHelper.error(String.format("Unknown Armor Type: %s", armor.armorType));
-                                break;
-                        }
+                        nerfArmorRecipe(outputStack, ingot, nugget);
                     }
                 }
             }
         }
+    }
+
+    private static void nerfArmorRecipe (final ItemStack outputStack, final Object ingot, final Object nugget)
+    {
+        CraftingRecipeHandler.removeCraftingRecipe(outputStack);
+        BetterBeginningsHandler.addNerfedArmorRecipe(outputStack, ingot, nugget);
     }
 
     private static void nerfAllToolRecipes ()
