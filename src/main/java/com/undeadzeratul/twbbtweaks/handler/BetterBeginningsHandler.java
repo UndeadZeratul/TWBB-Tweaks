@@ -65,12 +65,12 @@ public class BetterBeginningsHandler
     {
         if (craftingMaterial != null && extraMaterial != null && outputStack != null && outputStack.getItem() instanceof ItemArmor)
         {
-            advCraftingInstance.addAdvancedRecipe(outputStack, buildAdditionalMaterials(outputStack, extraMaterial),
-                                                      buildCraftingPattern(outputStack, craftingMaterial));
+            advCraftingInstance.addAdvancedRecipe(outputStack, buildAdditionalArmorMaterials(outputStack, extraMaterial),
+                                                      buildArmorCraftingPattern(outputStack, craftingMaterial));
         }
     }
 
-    private static Object[] buildAdditionalMaterials (final ItemStack outputStack, final Object extraMaterial)
+    private static Object[] buildAdditionalArmorMaterials (final ItemStack outputStack, final Object extraMaterial)
     {
         if (extraMaterial instanceof Object[])
         {
@@ -103,7 +103,7 @@ public class BetterBeginningsHandler
                 };
     }
 
-    private static Object[] buildCraftingPattern (final ItemStack outputStack, final Object craftingMaterial)
+    private static Object[] buildArmorCraftingPattern (final ItemStack outputStack, final Object craftingMaterial)
     {
         if (craftingMaterial instanceof Object[])
         {
