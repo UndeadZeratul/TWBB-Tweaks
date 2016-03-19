@@ -36,6 +36,7 @@ public class TwbbTweaks
     @Mod.EventHandler
     public void preInit (final FMLPreInitializationEvent event)
     {
+        Reference.configDir = event.getModConfigurationDirectory();
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
         proxy.registerEventHandlers();
 
