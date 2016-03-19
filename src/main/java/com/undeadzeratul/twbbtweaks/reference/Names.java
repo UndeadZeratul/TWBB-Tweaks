@@ -11,6 +11,7 @@ public class Names
         public static final String BOP                = "BiomesOPlenty";
         public static final String FALLING_METEORS    = "meteors";
         public static final String FSP                = "Steamcraft";
+        public static final String HAMMERZ            = "Hammerz";
         public static final String HARVESTCRAFT       = "harvestcraft";
         public static final String METALLURGY         = "Metallurgy";
         public static final String MINE_AND_BLADE     = "battlegear2";

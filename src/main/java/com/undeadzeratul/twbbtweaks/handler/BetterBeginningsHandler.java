@@ -11,7 +11,15 @@ import net.einsteinsci.betterbeginnings.register.recipe.AdvancedRecipe;
 import net.einsteinsci.betterbeginnings.register.recipe.SmelterRecipeHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemFishingRod;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class BetterBeginningsHandler
@@ -61,23 +69,27 @@ public class BetterBeginningsHandler
     }
 
     public static void addNerfedArmorRecipe (final ItemStack outputStack, final Object craftingMaterial,
-                                              final Object extraMaterial)
+                                             final Object extraMaterial)
     {
-        if (craftingMaterial != null && extraMaterial != null && outputStack != null && outputStack.getItem() instanceof ItemArmor)
+        if (craftingMaterial != null && extraMaterial != null && outputStack != null &&
+            outputStack.getItem() instanceof ItemArmor)
         {
-            advCraftingInstance.addAdvancedRecipe(outputStack, buildAdditionalArmorMaterials(outputStack, extraMaterial),
-                                                      buildArmorCraftingPattern(outputStack, craftingMaterial));
+            ItemArmor armor = (ItemArmor) outputStack.getItem();
+
+            advCraftingInstance.addAdvancedRecipe(outputStack,
+                                                  buildAdditionalArmorMaterials(armor, extraMaterial),
+                                                  buildArmorCraftingPattern(armor, craftingMaterial));
         }
     }
 
-    private static Object[] buildAdditionalArmorMaterials (final ItemStack outputStack, final Object extraMaterial)
+    private static Object[] buildAdditionalArmorMaterials (final ItemArmor output, final Object extraMaterial)
     {
         if (extraMaterial instanceof Object[])
         {
             return (Object[]) extraMaterial;
         }
 
-        AdditionalArmorCosts additionalCosts = AdditionalArmorCosts.values()[((ItemArmor) outputStack.getItem()).armorType];
+        AdditionalCosts additionalCosts = getAdditionalCosts(output);
 
         ItemStack leatherStrips = new ItemStack(GameRegistry.findItem(ModIds.BETTER_BEGINNINGS, "leatherStrip"), additionalCosts.itemStack2);
         ItemStack woolBlocks = new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "wool"), additionalCosts.itemStack3, OreDictionary.WILDCARD_VALUE);
@@ -103,14 +115,14 @@ public class BetterBeginningsHandler
                 };
     }
 
-    private static Object[] buildArmorCraftingPattern (final ItemStack outputStack, final Object craftingMaterial)
+    private static Object[] buildArmorCraftingPattern (final ItemArmor output, final Object craftingMaterial)
     {
         if (craftingMaterial instanceof Object[])
         {
             return (Object[]) craftingMaterial;
         }
 
-        switch (((ItemArmor) outputStack.getItem()).armorType)
+        switch (output.armorType)
         {
             case 0:
                 return new Object[]
@@ -151,18 +163,230 @@ public class BetterBeginningsHandler
         }
     }
 
-    private enum AdditionalArmorCosts
+    public static void addNerfedToolRecipe (final ItemStack outputStack, final Object craftingMaterial, final Object handleMaterial, final Object extraMaterial)
+    {
+        if (craftingMaterial != null && extraMaterial != null && outputStack != null)
+        {
+            advCraftingInstance.addAdvancedRecipe(outputStack,
+                                                  buildAdditionalToolMaterials(outputStack.getItem(), extraMaterial),
+                                                  buildToolCraftingPattern(outputStack.getItem(), craftingMaterial, handleMaterial));
+        }
+    }
+
+    private static Object[] buildAdditionalToolMaterials (final Item output, final Object extraMaterial)
+    {
+        if (extraMaterial instanceof Object[])
+        {
+            return (Object[]) extraMaterial;
+        }
+
+        AdditionalCosts additionalCosts = getAdditionalCosts(output);
+
+        ItemStack leatherStrips = new ItemStack(GameRegistry.findItem(ModIds.BETTER_BEGINNINGS, "leatherStrip"), additionalCosts.itemStack1);
+
+        return extraMaterial instanceof String
+                ? !Strings.isNullOrEmpty((String) extraMaterial)
+                        ? new Object[]
+                        {
+                            extraMaterial, additionalCosts.itemStack1
+                        }
+                        : new Object[]
+                        {
+                            leatherStrips
+                        }
+                : new Object[]
+                {
+                    extraMaterial
+                };
+    }
+
+    private static Object buildToolCraftingPattern (final Item output, final Object craftingMaterial, final Object handleMaterial)
+    {
+        Object ret = new Object[0];
+
+        if (craftingMaterial instanceof Object[])
+        {
+            ret = craftingMaterial;
+        }
+        else if(output instanceof ItemPickaxe)
+        {
+            ret = new Object[]
+            {
+                "iii",
+                " s ",
+                " s ",
+                'i',
+                craftingMaterial,
+                's',
+                handleMaterial
+            };
+        }
+        else if (output instanceof ItemSword)
+        {
+            ret = new Object[]
+            {
+                "i",
+                "i",
+                "s",
+                'i',
+                craftingMaterial,
+                's',
+                handleMaterial
+            };
+        }
+        else if (output instanceof ItemAxe)
+        {
+            ret = new Object[]
+            {
+                "i",
+                "i",
+                "s",
+                'i',
+                craftingMaterial,
+                's',
+                handleMaterial
+            };
+        }
+        else if (output instanceof ItemSpade)
+        {
+            ret = new Object[]
+            {
+                "i",
+                "s",
+                "s",
+                'i',
+                craftingMaterial,
+                's',
+                handleMaterial
+            };
+        }
+        else if (output instanceof ItemHoe)
+        {
+            ret = new Object[]
+            {
+                "ii",
+                " s",
+                " s",
+                'i',
+                craftingMaterial,
+                's',
+                handleMaterial
+            };
+        }
+        else if (output instanceof ItemBow)
+        {
+            ret = new Object[]
+            {
+                " is",
+                "i s",
+                " is",
+                'i',
+                craftingMaterial,
+                's',
+                handleMaterial
+            };
+        }
+        else if (output instanceof ItemShears)
+        {
+            ret = new Object[]
+            {
+                " i",
+                "i ",
+                'i',
+                craftingMaterial,
+            };
+        }
+        else if (output instanceof ItemFishingRod)
+        {
+            ret = new Object[]
+            {
+                "  i",
+                " is",
+                "i s",
+                'i',
+                craftingMaterial,
+                's',
+                handleMaterial
+            };
+        }
+
+        return ret;
+    }
+
+    private static AdditionalCosts getAdditionalCosts(final Item output)
+    {
+        int index = 0;
+
+        if (output instanceof ItemArmor)
+        {
+            index = ((ItemArmor) output).armorType;
+        }
+        else if(output instanceof ItemPickaxe)
+        {
+            index = 4;
+        }
+        else if (output instanceof ItemSword)
+        {
+            index = 5;
+        }
+        else if (output instanceof ItemAxe)
+        {
+            index = 6;
+        }
+        else if (output instanceof ItemSpade)
+        {
+            index = 7;
+        }
+        else if (output instanceof ItemHoe)
+        {
+            index = 8;
+        }
+        else if (output instanceof ItemBow)
+        {
+            index = 9;
+        }
+        else if (output instanceof ItemShears)
+        {
+            index = 10;
+        }
+        else if (output instanceof ItemFishingRod)
+        {
+            index = 11;
+        }
+
+        return AdditionalCosts.values()[index];
+    }
+
+    private enum AdditionalCosts
     {
         HELMET(2, 3, 2),
         CHESTPLATE(6, 2, 4),
         LEGGINGS(4, 4, 1),
-        BOOTS(3, 2, 3);
+        BOOTS(3, 2, 3),
+        PICKAXE(3),
+        SWORD(2),
+        AXE(2),
+        SHOVEL(2),
+        HOE(1),
+        BOW(3),
+        SHEARS(3),
+        FISHING_ROD(1);
 
         private int itemStack1 = 0;
         private int itemStack2 = 0;
         private int itemStack3 = 0;
 
-        AdditionalArmorCosts (final int itemStack1, final int itemStack2, final int itemStack3)
+        AdditionalCosts (final int itemStack1)
+        {
+            this(itemStack1, 0);
+        }
+
+        AdditionalCosts (final int itemStack1, final int itemStack2)
+        {
+            this(itemStack1, itemStack2, 0);
+        }
+
+        AdditionalCosts (final int itemStack1, final int itemStack2, final int itemStack3)
         {
             this.itemStack1 = itemStack1;
             this.itemStack2 = itemStack2;
