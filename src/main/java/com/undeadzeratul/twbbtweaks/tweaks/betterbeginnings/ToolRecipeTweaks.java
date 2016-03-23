@@ -10,18 +10,22 @@ import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.einsteinsci.betterbeginnings.items.ItemFlintHatchet;
+import net.einsteinsci.betterbeginnings.items.ItemKnifeBone;
+import net.einsteinsci.betterbeginnings.items.ItemKnifeFlint;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ToolRecipeTweaks
 {
-    private static final String ANY_BLAZE_RON         = "itemBlazeRod";
-    private static final String ANY_IRON_ROD          = "rodIron";
-    private static final String ANY_OBSIDIAN_ROD      = "rodObsidian";
-    private static final String ANY_STICK             = "stickWood";
-    private static final String ANY_STRING            = "itemString";
+    private static final String ANY_BLAZE_RON    = "itemBlazeRod";
+    private static final String ANY_IRON_ROD     = "rodIron";
+    private static final String ANY_OBSIDIAN_ROD = "rodObsidian";
+    private static final String ANY_STICK        = "stickWood";
+    private static final String ANY_STRING       = "itemString";
 
     private static Item         leatherStrip;
     private static Item         naturaItem;
@@ -73,6 +77,11 @@ public class ToolRecipeTweaks
         if (Loader.isModLoaded(ModIds.RANDOM_THINGS))
         {
             nerfRandomThingsTools();
+        }
+
+        if (Loader.isModLoaded(ModIds.THERMAL_FOUNDATION))
+        {
+            nerfThermalFoundationTools();
         }
 
         if (Loader.isModLoaded(ModIds.TWILIGHT_FOREST))
@@ -130,9 +139,9 @@ public class ToolRecipeTweaks
         // Kreknorite
         ItemStack kreknoriteIngot = new ItemStack(GameRegistry.findItem(ModIds.FALLING_METEORS, "KreknoriteIngot"));
 
-        nerfToolRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "KreKSword", 0, 1,
-                                                   "{ench: [{lvl: 2, id: 20}], enchant-set: true}"),
-                        kreknoriteIngot, ANY_OBSIDIAN_ROD, new ItemStack(naturaItem, 2, 7));
+        nerfToolRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "KrekSword", 0, 1,
+                                                  "{ench: [{lvl: 2, id: 20}], enchant-set: true}"),
+                       kreknoriteIngot, ANY_OBSIDIAN_ROD, new ItemStack(naturaItem, 2, 7));
     }
 
     private static void nerfHammerzTools ()
@@ -178,8 +187,8 @@ public class ToolRecipeTweaks
                        }, leatherStrips);
 
         // Bloodwood
-        ItemStack bloodwoodPlanks = new ItemStack(naturaPlanks, 1, 2);
-        ItemStack bloodwoodStick = new ItemStack(naturaStick, 1, 2);
+        ItemStack bloodwoodPlanks = new ItemStack(naturaPlanks, 1, 4);
+        ItemStack bloodwoodStick = new ItemStack(naturaStick, 1, 4);
 
         nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.NATURA, "natura.pickaxe.bloodwood")), bloodwoodPlanks,
                        bloodwoodStick);
@@ -214,7 +223,7 @@ public class ToolRecipeTweaks
                        darkwoodStick);
         nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.NATURA, "natura.shovel.darkwood")), darkwoodPlanks,
                        darkwoodStick);
-        nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.NATURA, "natura.bow.bloodwood")), bloodwoodStick,
+        nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.NATURA, "natura.bow.darkwood")), bloodwoodStick,
                        flameString);
         nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.NATURA, "natura.kama.darkwood")),
                        new Object[] {
@@ -228,8 +237,8 @@ public class ToolRecipeTweaks
                        }, leatherStrips);
 
         // Fusewood
-        ItemStack fusewoodPlanks = new ItemStack(naturaPlanks, 1, 2);
-        ItemStack fusewoodStick = new ItemStack(naturaStick, 1, 2);
+        ItemStack fusewoodPlanks = new ItemStack(naturaPlanks, 1, 11);
+        ItemStack fusewoodStick = new ItemStack(naturaStick, 1, 11);
 
         nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.NATURA, "natura.pickaxe.fusewood")), fusewoodPlanks,
                        fusewoodStick);
@@ -285,6 +294,131 @@ public class ToolRecipeTweaks
                        ANY_OBSIDIAN_ROD);
     }
 
+    private static void nerfThermalFoundationTools ()
+    {
+        String[] toolPrefixes = new String[]
+        {
+            "tool.pickaxe",
+            "tool.axe",
+            "tool.shovel",
+            "tool.hoe",
+            "tool.bow",
+            "tool.shears",
+            "tool.fishingRod",
+            "tool.sickle"
+        };
+        String[] metals = new String[]
+        {
+            "Bronze",
+            "Copper",
+            "Electrum",
+            "Invar",
+            "Lead",
+            "Nickel",
+            "Platinum",
+            "Silver",
+            "Tin"
+        };
+        Object[][] toolCraftingPatterns = new Object[][]
+        {
+            new Object[] {
+                "iii",
+                " s ",
+                " s ",
+                'i',
+                null,
+                's',
+                ANY_STICK
+            },
+            new Object[] {
+                "ii",
+                "is",
+                " s",
+                'i',
+                null,
+                's',
+                ANY_STICK
+            },
+            new Object[] {
+                "i",
+                "s",
+                "s",
+                'i',
+                null,
+                's',
+                ANY_STICK
+            },
+            new Object[] {
+                "ii",
+                " s",
+                " s",
+                'i',
+                null,
+                's',
+                ANY_STICK
+            },
+            new Object[] {
+                " is",
+                "h s",
+                " is",
+                'i',
+                null,
+                'h',
+                ANY_STICK,
+                's',
+                ANY_STRING
+            },
+            new Object[] {
+                " i",
+                "i ",
+                'i',
+                null
+            },
+            new Object[] {
+                "  i",
+                " is",
+                "h s",
+                'i',
+                null,
+                'h',
+                ANY_STICK,
+                's',
+                ANY_STRING
+            },
+            new Object[] {
+                " i ",
+                "  i",
+                "si ",
+                'i',
+                null,
+                's',
+                ANY_STICK
+            }
+        };
+
+        for (String metal : metals)
+        {
+            for (int j = 0; j < toolPrefixes.length; j++)
+            {
+                nerfThermalFoundationTool(toolPrefixes[j], metal, toolCraftingPatterns[j]);
+            }
+        }
+    }
+
+    private static void nerfThermalFoundationTool (final String toolPrefix, final String metalName, final Object[] craftingPattern)
+    {
+        craftingPattern[craftingPattern.length == 4 ? 3 : 4] = "ingot" + metalName;
+
+                if (toolPrefix.equals("tool.shears") || toolPrefix.equals("tool.fishingRod"))
+                {
+                    nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.THERMAL_FOUNDATION, toolPrefix + metalName)), craftingPattern, "nugget" + metalName);
+                }
+                else
+                {
+                    nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.THERMAL_FOUNDATION, toolPrefix + metalName)), craftingPattern);
+                }
+    }
+
     private static void nerfTwilightforestTools ()
     {
         // Ironwood
@@ -319,7 +453,7 @@ public class ToolRecipeTweaks
         nerfToolRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.steeleafShovel", 0, 1,
                                                   "{ench: [{lvl: 2, id: 32}]}"),
                        steeleaf);
-        nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.steeleafShovel")), steeleaf);
+        nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.steeleafHoe")), steeleaf);
 
         // Fiery
         ItemStack fieryIngot = new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.fieryIngot"));
@@ -330,7 +464,10 @@ public class ToolRecipeTweaks
                         fieryIngot, ANY_BLAZE_RON, new ItemStack(naturaItem, 2, 7));
 
         // Knightmetal
+        Item knightmetalRing = GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.knightMetalRing");
+
         ItemStack knightmetalIngot = new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.knightMetal"));
+        ItemStack knightmetalBlock = new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.knightMetalBlock"));
 
         nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.knightlyPick")),
                        knightmetalIngot);
@@ -338,33 +475,53 @@ public class ToolRecipeTweaks
                        knightmetalIngot);
         nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.knightlyAxe")),
                        knightmetalIngot);
+        nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.chainBlock")),
+                       new Object[] {
+                           " b ",
+                           "  r",
+                           "ir ",
+                           'b',
+                           knightmetalBlock,
+                           'r',
+                           new ItemStack(knightmetalRing),
+                           'i',
+                           knightmetalIngot
+                       },
+                       new Object[] {
+                           new ItemStack(knightmetalRing, 2)
+                       });
+
+        // Giant
+        ItemStack giantCobblestone = new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "tile.GiantCobble"));
+        ItemStack giantLog = new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "tile.GiantLog"));
+
+        nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.giantPick")), giantCobblestone, giantLog);
+        nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.giantSword")), giantCobblestone, giantLog);
     }
 
     private static void nerfStandardToolRecipes ()
     {
         for (Item item : (Iterable<Item>) GameData.getItemRegistry())
         {
-            if (item instanceof ItemArmor
-                && !BetterBeginningsHandler.advCraftingRecipeExists(item)
-                && CraftingRecipeHandler.craftingRecipeExists(item))
+            if ((item instanceof ItemTool || item instanceof ItemSword) && !isBBTool(item)
+                    && !BetterBeginningsHandler.advCraftingRecipeExists(item)
+                    && CraftingRecipeHandler.craftingRecipeExists(item))
             {
-                ItemArmor armor = (ItemArmor) item;
-                ItemStack outputStack = new ItemStack(armor);
-                String repairMaterial = BetterBeginningsHandler.getRepairMaterial(armor);
+                String repairMaterial = BetterBeginningsHandler.getToolRepairMaterial(item);
 
-                if (!Strings.isNullOrEmpty(repairMaterial))
+                if (!Strings.isNullOrEmpty(repairMaterial) && !OreDictionary.getOres(repairMaterial).isEmpty())
                 {
-                    String ingot = repairMaterial.startsWith("ingot")
-                            ? repairMaterial
-                            : "ingot" + repairMaterial;
-
-                    if (!OreDictionary.getOres(ingot).isEmpty())
-                    {
-                        nerfToolRecipe(outputStack, ingot);
-                    }
+                    nerfToolRecipe(new ItemStack(item), repairMaterial);
                 }
             }
         }
+    }
+
+    private static boolean isBBTool (final Item item)
+    {
+        return item instanceof ItemKnifeFlint
+                || item instanceof ItemFlintHatchet
+                || item instanceof ItemKnifeBone;
     }
 
     private static void nerfToolRecipe (final ItemStack outputStack, final Object craftingMaterial)
@@ -372,7 +529,13 @@ public class ToolRecipeTweaks
         nerfToolRecipe(outputStack, craftingMaterial, ANY_STICK);
     }
 
-    private static void nerfToolRecipe (final ItemStack outputStack, final Object[] craftingMaterial, final Object additionalMaterials)
+    private static void nerfToolRecipe (final ItemStack outputStack, final Object[] craftingMaterial)
+    {
+        nerfToolRecipe(outputStack, craftingMaterial, StringUtils.EMPTY);
+    }
+
+    private static void nerfToolRecipe (final ItemStack outputStack, final Object[] craftingMaterial,
+                                        final Object additionalMaterials)
     {
         nerfToolRecipe(outputStack, craftingMaterial, StringUtils.EMPTY, additionalMaterials);
     }

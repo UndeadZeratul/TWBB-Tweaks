@@ -169,7 +169,7 @@ public class ArmorRecipeTweaks
         // Kreknorite
         ItemStack kreknoriteIngot = new ItemStack(GameRegistry.findItem(ModIds.FALLING_METEORS, "KreknoriteIngot"));
 
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "KreKHelm", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "KrekHelm", 0, 1,
                                                    "{ench: [{lvl: 4, id: 1}], enchant-set: true}"),
                         kreknoriteIngot, ANY_KREKNORITE_NUGGET);
         nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "KrekBody", 0, 1,
@@ -408,7 +408,7 @@ public class ArmorRecipeTweaks
             {
                 ItemArmor armor = (ItemArmor) item;
                 ItemStack outputStack = new ItemStack(armor);
-                String repairMaterial = BetterBeginningsHandler.getRepairMaterial(armor);
+                String repairMaterial = BetterBeginningsHandler.getArmorRepairMaterial(armor);
 
                 if (!Strings.isNullOrEmpty(repairMaterial))
                 {

@@ -20,6 +20,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class BetterBeginningsHandler
@@ -47,7 +48,7 @@ public class BetterBeginningsHandler
         return false;
     }
 
-    public static String getRepairMaterial (final ItemArmor armor)
+    public static String getArmorRepairMaterial (final ItemArmor armor)
     {
         for (String oreDictName : OreDictionary.getOreNames())
         {
@@ -55,7 +56,7 @@ public class BetterBeginningsHandler
             {
                 for (ItemStack ore : OreDictionary.getOres(oreDictName))
                 {
-                    if (ore != null && ore.getItem().equals(armor.getArmorMaterial().func_151685_b()))
+                    if (armor.getIsRepairable(new ItemStack(armor), ore))
                     {
                         return oreDictName.startsWith("ingot")
                                 ? oreDictName.substring(5)
@@ -163,6 +164,29 @@ public class BetterBeginningsHandler
         }
     }
 
+    public static String getToolRepairMaterial (final Item tool)
+    {
+        for (String oreDictName : OreDictionary.getOreNames())
+        {
+            if (!Strings.isNullOrEmpty(oreDictName))
+            {
+                for (ItemStack ore : OreDictionary.getOres(oreDictName))
+                {
+                    if (tool instanceof ItemTool && ((ItemTool) tool).getIsRepairable(new ItemStack(tool), ore))
+                    {
+                        return oreDictName;
+                    }
+                    else if (tool instanceof ItemSword && ((ItemSword) tool).getIsRepairable(new ItemStack(tool), ore))
+                    {
+                        return oreDictName;
+                    }
+                }
+            }
+        }
+
+        return StringUtils.EMPTY;
+    }
+
     public static void addNerfedToolRecipe (final ItemStack outputStack, final Object craftingMaterial, final Object handleMaterial, final Object extraMaterial)
     {
         if (craftingMaterial != null && extraMaterial != null && outputStack != null)
@@ -200,13 +224,13 @@ public class BetterBeginningsHandler
                 };
     }
 
-    private static Object buildToolCraftingPattern (final Item output, final Object craftingMaterial, final Object handleMaterial)
+    private static Object[] buildToolCraftingPattern (final Item output, final Object craftingMaterial, final Object handleMaterial)
     {
-        Object ret = new Object[0];
+        Object[] ret = new Object[0];
 
         if (craftingMaterial instanceof Object[])
         {
-            ret = craftingMaterial;
+            ret = (Object[]) craftingMaterial;
         }
         else if(output instanceof ItemPickaxe)
         {
@@ -238,9 +262,9 @@ public class BetterBeginningsHandler
         {
             ret = new Object[]
             {
-                "i",
-                "i",
-                "s",
+                "ii",
+                "is",
+                " s",
                 'i',
                 craftingMaterial,
                 's',
@@ -369,7 +393,7 @@ public class BetterBeginningsHandler
         SHOVEL(2),
         HOE(1),
         BOW(3),
-        SHEARS(3),
+        SHEARS(1),
         FISHING_ROD(1);
 
         private int itemStack1 = 0;
