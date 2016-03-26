@@ -7,11 +7,19 @@ public class Settings
     public static class BetterBeginnings
     {
         public static boolean disableBBSmelter;
+
         public static boolean enableBBTweaks;
+
+        public static boolean nerfCraftingRecipes;
+
         public static boolean nerfAllArmorRecipes;
-        public static boolean nerfAllMiscRecipes;
-        public static boolean nerfAllRecipes;
         public static boolean nerfAllToolRecipes;
+        public static boolean nerfAllMiscRecipes;
+
+        public static boolean nerfAllCookingRecipes;
+        public static boolean nerfAllCampfireRecipes;
+        public static boolean nerfAllBrickOvenRecipes;
+        public static boolean nerfAllKilnRecipes;
     }
 
     public static class TConstruct

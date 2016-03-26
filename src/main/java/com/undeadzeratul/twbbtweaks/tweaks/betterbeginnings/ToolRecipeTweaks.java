@@ -19,7 +19,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ToolRecipeTweaks
+public class ToolRecipeTweaks extends AbstractBBTweaks
 {
     private static final String ANY_BLAZE_RON    = "itemBlazeRod";
     private static final String ANY_IRON_ROD     = "rodIron";
@@ -32,7 +32,7 @@ public class ToolRecipeTweaks
     private static Item         naturaPlanks;
     private static Item         naturaStick;
 
-    public static void init ()
+    public ToolRecipeTweaks ()
     {
         leatherStrip = GameRegistry.findItem(ModIds.BETTER_BEGINNINGS, "leatherStrip");
         naturaItem = GameRegistry.findItem(ModIds.NATURA, "barleyFood");
@@ -40,14 +40,8 @@ public class ToolRecipeTweaks
         naturaStick = GameRegistry.findItem(ModIds.NATURA, "natura.stick");
     }
 
-    public static void nerfAllToolRecipes ()
-    {
-        nerfNonStandardToolRecipes();
-
-        nerfStandardToolRecipes();
-    }
-
-    private static void nerfNonStandardToolRecipes ()
+    @Override
+    protected void nerfNonStandardRecipes ()
     {
         if (Loader.isModLoaded(ModIds.BETTER_STORAGE))
         {
@@ -87,6 +81,25 @@ public class ToolRecipeTweaks
         if (Loader.isModLoaded(ModIds.TWILIGHT_FOREST))
         {
             nerfTwilightforestTools();
+        }
+    }
+
+    @Override
+    protected void nerfStandardRecipes ()
+    {
+        for (Item item : (Iterable<Item>) GameData.getItemRegistry())
+        {
+            if ((item instanceof ItemTool || item instanceof ItemSword) && !isBBTool(item)
+                    && !BetterBeginningsHandler.advCraftingRecipeExists(item)
+                    && CraftingRecipeHandler.craftingRecipeExists(item))
+            {
+                String repairMaterial = BetterBeginningsHandler.getToolRepairMaterial(item);
+
+                if (!Strings.isNullOrEmpty(repairMaterial) && !OreDictionary.getOres(repairMaterial).isEmpty())
+                {
+                    nerfToolRecipe(new ItemStack(item), repairMaterial);
+                }
+            }
         }
     }
 
@@ -499,24 +512,6 @@ public class ToolRecipeTweaks
         nerfToolRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.giantSword")), giantCobblestone, giantLog);
     }
 
-    private static void nerfStandardToolRecipes ()
-    {
-        for (Item item : (Iterable<Item>) GameData.getItemRegistry())
-        {
-            if ((item instanceof ItemTool || item instanceof ItemSword) && !isBBTool(item)
-                    && !BetterBeginningsHandler.advCraftingRecipeExists(item)
-                    && CraftingRecipeHandler.craftingRecipeExists(item))
-            {
-                String repairMaterial = BetterBeginningsHandler.getToolRepairMaterial(item);
-
-                if (!Strings.isNullOrEmpty(repairMaterial) && !OreDictionary.getOres(repairMaterial).isEmpty())
-                {
-                    nerfToolRecipe(new ItemStack(item), repairMaterial);
-                }
-            }
-        }
-    }
-
     private static boolean isBBTool (final Item item)
     {
         return item instanceof ItemKnifeFlint
@@ -549,7 +544,7 @@ public class ToolRecipeTweaks
     private static void nerfToolRecipe (final ItemStack outputStack, final Object craftingMaterial,
                                         final Object handleMaterial, final Object additionalMaterials)
     {
-        CraftingRecipeHandler.removeCraftingRecipe(outputStack);
+        CraftingRecipeHandler.removeCraftingRecipes(outputStack);
         BetterBeginningsHandler.addNerfedToolRecipe(outputStack, craftingMaterial, handleMaterial, additionalMaterials);
     }
 }

@@ -4,6 +4,9 @@ import com.undeadzeratul.twbbtweaks.handler.CraftingRecipeHandler;
 import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
 import com.undeadzeratul.twbbtweaks.reference.Settings;
 import com.undeadzeratul.twbbtweaks.tweaks.betterbeginnings.ArmorRecipeTweaks;
+import com.undeadzeratul.twbbtweaks.tweaks.betterbeginnings.BrickOvenRecipeTweaks;
+import com.undeadzeratul.twbbtweaks.tweaks.betterbeginnings.CampfireRecipeTweaks;
+import com.undeadzeratul.twbbtweaks.tweaks.betterbeginnings.KilnRecipeTweaks;
 import com.undeadzeratul.twbbtweaks.tweaks.betterbeginnings.ToolRecipeTweaks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,23 +22,44 @@ public class BetterBeginningsTweaks
                 disableBBSmelter();
             }
 
-            if (Settings.BetterBeginnings.nerfAllRecipes)
+            if (Settings.BetterBeginnings.nerfCraftingRecipes)
             {
                 if (Settings.BetterBeginnings.nerfAllArmorRecipes)
                 {
-                    ArmorRecipeTweaks.init();
-                    ArmorRecipeTweaks.nerfAllArmorRecipes();
+                    ArmorRecipeTweaks armorTweaks = new ArmorRecipeTweaks();
+                    armorTweaks.nerfRecipes();
                 }
 
                 if (Settings.BetterBeginnings.nerfAllToolRecipes)
                 {
-                    ToolRecipeTweaks.init();
-                    ToolRecipeTweaks.nerfAllToolRecipes();
+                    ToolRecipeTweaks toolTweaks = new ToolRecipeTweaks();
+                    toolTweaks.nerfRecipes();
                 }
 
                 if (Settings.BetterBeginnings.nerfAllMiscRecipes)
                 {
                     nerfAllMiscRecipes();
+                }
+
+                if (Settings.BetterBeginnings.nerfAllCookingRecipes)
+                {
+                    if (Settings.BetterBeginnings.nerfAllBrickOvenRecipes)
+                    {
+                        BrickOvenRecipeTweaks brickOvenTweaks = new BrickOvenRecipeTweaks();
+                        brickOvenTweaks.nerfRecipes();
+                    }
+
+                    if (Settings.BetterBeginnings.nerfAllCampfireRecipes)
+                    {
+                        CampfireRecipeTweaks campfireTweaks = new CampfireRecipeTweaks();
+                        campfireTweaks.nerfRecipes();
+                    }
+
+                    if (Settings.BetterBeginnings.nerfAllKilnRecipes)
+                    {
+                        KilnRecipeTweaks kilnTweaks = new KilnRecipeTweaks();
+                        kilnTweaks.nerfRecipes();
+                    }
                 }
             }
         }
@@ -43,7 +67,7 @@ public class BetterBeginningsTweaks
 
     private static void disableBBSmelter ()
     {
-        CraftingRecipeHandler.removeCraftingRecipe(GameRegistry.findItem(ModIds.BETTER_BEGINNINGS, "smelter"));
+        CraftingRecipeHandler.removeCraftingRecipes(GameRegistry.findItem(ModIds.BETTER_BEGINNINGS, "smelter"));
     }
 
     private static void nerfAllMiscRecipes ()

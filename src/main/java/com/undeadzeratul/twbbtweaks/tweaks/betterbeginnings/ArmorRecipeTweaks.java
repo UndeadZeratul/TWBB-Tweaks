@@ -15,7 +15,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ArmorRecipeTweaks
+public class ArmorRecipeTweaks extends AbstractBBTweaks
 {
     private static final String ANY_IRON_NUGGET       = "nuggetIron";
     private static final String ANY_KREKNORITE_NUGGET = "nuggetKreknorite";
@@ -27,20 +27,14 @@ public class ArmorRecipeTweaks
     private static Item         naturaItem;
     private static Item         woolBlock;
 
-    public static void init()
+    public ArmorRecipeTweaks()
     {
         naturaItem = GameRegistry.findItem(ModIds.NATURA, "barleyFood");
         woolBlock = GameRegistry.findItem(ModIds.MINECRAFT, "wool");
     }
 
-    public static void nerfAllArmorRecipes ()
-    {
-        nerfNonStandardArmorRecipes();
-
-        nerfStandardArmorRecipes();
-    }
-
-    private static void nerfNonStandardArmorRecipes ()
+    @Override
+    protected void nerfNonStandardRecipes ()
     {
         nerfChainArmor();
 
@@ -87,6 +81,37 @@ public class ArmorRecipeTweaks
         if (Loader.isModLoaded(ModIds.TWILIGHT_FOREST))
         {
             nerfTwilightforestArmor();
+        }
+    }
+
+    @Override
+    protected void nerfStandardRecipes ()
+    {
+        for (Item item : (Iterable<Item>) GameData.getItemRegistry())
+        {
+            if (item instanceof ItemArmor
+                && !BetterBeginningsHandler.advCraftingRecipeExists(item)
+                && CraftingRecipeHandler.craftingRecipeExists(item))
+            {
+                ItemArmor armor = (ItemArmor) item;
+                ItemStack outputStack = new ItemStack(armor);
+                String repairMaterial = BetterBeginningsHandler.getArmorRepairMaterial(armor);
+
+                if (!Strings.isNullOrEmpty(repairMaterial))
+                {
+                    String ingot = repairMaterial.startsWith("ingot")
+                            ? repairMaterial
+                            : "ingot" + repairMaterial;
+                    String nugget = repairMaterial.startsWith("nugget")
+                            ? repairMaterial
+                            : "nugget" + repairMaterial;
+
+                    if (!OreDictionary.getOres(ingot).isEmpty() && !OreDictionary.getOres(nugget).isEmpty() && outputStack.getItem() instanceof ItemArmor)
+                    {
+                        nerfArmorRecipe(outputStack, ingot, nugget);
+                    }
+                }
+            }
         }
     }
 
@@ -398,36 +423,6 @@ public class ArmorRecipeTweaks
                         leather, new ItemStack(alphaYetiFur, 3));
     }
 
-    private static void nerfStandardArmorRecipes ()
-    {
-        for (Item item : (Iterable<Item>) GameData.getItemRegistry())
-        {
-            if (item instanceof ItemArmor
-                && !BetterBeginningsHandler.advCraftingRecipeExists(item)
-                && CraftingRecipeHandler.craftingRecipeExists(item))
-            {
-                ItemArmor armor = (ItemArmor) item;
-                ItemStack outputStack = new ItemStack(armor);
-                String repairMaterial = BetterBeginningsHandler.getArmorRepairMaterial(armor);
-
-                if (!Strings.isNullOrEmpty(repairMaterial))
-                {
-                    String ingot = repairMaterial.startsWith("ingot")
-                            ? repairMaterial
-                            : "ingot" + repairMaterial;
-                    String nugget = repairMaterial.startsWith("nugget")
-                            ? repairMaterial
-                            : "nugget" + repairMaterial;
-
-                    if (!OreDictionary.getOres(ingot).isEmpty() && !OreDictionary.getOres(nugget).isEmpty() && outputStack.getItem() instanceof ItemArmor)
-                    {
-                        nerfArmorRecipe(outputStack, ingot, nugget);
-                    }
-                }
-            }
-        }
-    }
-
     private static void nerfArmorRecipe (final ItemStack outputStack, final Object craftingMaterial)
     {
         nerfArmorRecipe(outputStack, craftingMaterial, StringUtils.EMPTY);
@@ -436,7 +431,7 @@ public class ArmorRecipeTweaks
     private static void nerfArmorRecipe (final ItemStack outputStack, final Object craftingMaterial,
                                          final Object additionalMaterials)
     {
-        CraftingRecipeHandler.removeCraftingRecipe(outputStack);
+        CraftingRecipeHandler.removeCraftingRecipes(outputStack);
         BetterBeginningsHandler.addNerfedArmorRecipe(outputStack, craftingMaterial, additionalMaterials);
     }
 }

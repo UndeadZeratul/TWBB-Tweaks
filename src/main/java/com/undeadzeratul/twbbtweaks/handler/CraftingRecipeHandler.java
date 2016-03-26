@@ -14,18 +14,27 @@ public class CraftingRecipeHandler
 {
     private static final List<IRecipe> RECIPES = CraftingManager.getInstance().getRecipeList();
 
-    public static void removeCraftingRecipe (final ItemStack outputStack)
+    public static void removeCraftingRecipes (final ItemStack outputStack)
     {
-        removeCraftingRecipe(outputStack.getItem());
+        removeCraftingRecipes(outputStack.getItem());
     }
 
-    public static void removeCraftingRecipe (final Item output)
+    public static void removeCraftingRecipes (final Item output)
     {
-        IRecipe recipe = getCraftingRecipe(output);
+        boolean recipeFound = true;
 
-        if (recipe != null)
+        while (recipeFound)
         {
-            RECIPES.remove(recipe);
+            IRecipe recipe = getCraftingRecipe(output);
+
+            if (recipe != null)
+            {
+                RECIPES.remove(recipe);
+            }
+            else
+            {
+                recipeFound = false;
+            }
         }
     }
 
@@ -66,9 +75,7 @@ public class CraftingRecipeHandler
     {
         if (output instanceof ItemBlock)
         {
-            ItemBlock outputBlock = (ItemBlock) output;
-
-            return outputBlock.getUnlocalizedName();
+            return ((ItemBlock) output).getUnlocalizedName();
         }
         else
         {

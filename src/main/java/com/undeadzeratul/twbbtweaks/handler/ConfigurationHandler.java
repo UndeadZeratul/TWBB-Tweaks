@@ -77,8 +77,8 @@ public class ConfigurationHandler
 
     private static void loadBBRecipeNerfConfigs (final String category)
     {
-        Settings.BetterBeginnings.nerfAllRecipes = configuration
-                .getBoolean("enableAllRecipeNerfs", category, true,
+        Settings.BetterBeginnings.nerfCraftingRecipes = configuration
+                .getBoolean("enableAllCraftingRecipeNerfs", category, true,
                             "Set this to true to activate all recipe nerfs, making it so that any recipe nerfed will require the advanced crafting table.");
         Settings.BetterBeginnings.nerfAllArmorRecipes = configuration
                 .getBoolean("nerfAllArmorRecipes", category, true,
@@ -88,6 +88,19 @@ public class ConfigurationHandler
                             "Set this to true to nerf all tool recipes to require the advanced crafting table.");
         Settings.BetterBeginnings.nerfAllMiscRecipes = configuration
                 .getBoolean("nerfAllMiscRecipes", category, true,
+                            "Set this to true to nerf other random recipes to require the advanced crafting table.");
+
+        Settings.BetterBeginnings.nerfAllCookingRecipes = configuration
+                .getBoolean("nerfAllCookingRecipes", category, true,
+                            "Set this to true to nerf various cooking recipes to require the brick oven, campfire, or kiln.");
+        Settings.BetterBeginnings.nerfAllBrickOvenRecipes = configuration
+                .getBoolean("nerfAllBrickOvenRecipes", category, true,
+                            "Set this to true to nerf other random recipes to require the advanced crafting table.");
+        Settings.BetterBeginnings.nerfAllCampfireRecipes = configuration
+                .getBoolean("nerfAllCampfireRecipes", category, true,
+                            "Set this to true to nerf other random recipes to require the advanced crafting table.");
+        Settings.BetterBeginnings.nerfAllKilnRecipes = configuration
+                .getBoolean("nerfAllKilnRecipes", category, true,
                             "Set this to true to nerf other random recipes to require the advanced crafting table.");
     }
 

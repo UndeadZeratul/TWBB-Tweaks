@@ -1,5 +1,7 @@
 package com.undeadzeratul.twbbtweaks.handler;
 
+import java.util.Collection;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Strings;
@@ -8,6 +10,12 @@ import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.einsteinsci.betterbeginnings.register.recipe.AdvancedCraftingHandler;
 import net.einsteinsci.betterbeginnings.register.recipe.AdvancedRecipe;
+import net.einsteinsci.betterbeginnings.register.recipe.BrickOvenRecipeHandler;
+import net.einsteinsci.betterbeginnings.register.recipe.CampfirePanRecipes;
+import net.einsteinsci.betterbeginnings.register.recipe.CampfireRecipes;
+import net.einsteinsci.betterbeginnings.register.recipe.IBrickOvenRecipe;
+import net.einsteinsci.betterbeginnings.register.recipe.KilnRecipes;
+import net.einsteinsci.betterbeginnings.register.recipe.SmelterRecipe;
 import net.einsteinsci.betterbeginnings.register.recipe.SmelterRecipeHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -26,11 +34,19 @@ import net.minecraftforge.oredict.OreDictionary;
 public class BetterBeginningsHandler
 {
     private static AdvancedCraftingHandler advCraftingInstance;
+    private static BrickOvenRecipeHandler  brickOvenRecipeInstance;
+    private static CampfireRecipes         campfireRecipeInstance;
+    private static CampfirePanRecipes      campfirePanRecipeInstance;
+    private static KilnRecipes             kilnRecipeInstance;
     private static SmelterRecipeHandler    smelterRecipeInstance;
 
     public static void init ()
     {
         advCraftingInstance = AdvancedCraftingHandler.crafting();
+        brickOvenRecipeInstance = BrickOvenRecipeHandler.instance();
+        campfireRecipeInstance = CampfireRecipes.smelting();
+        campfirePanRecipeInstance = CampfirePanRecipes.smelting();
+        kilnRecipeInstance = KilnRecipes.smelting();
         smelterRecipeInstance = SmelterRecipeHandler.smelting();
     }
 
@@ -39,6 +55,62 @@ public class BetterBeginningsHandler
         for (AdvancedRecipe recipe : advCraftingInstance.getRecipeList())
         {
             if (StringUtils.equalsIgnoreCase(recipe.getRecipeOutput().getItem().getUnlocalizedName(),
+                                             item.getUnlocalizedName()))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean brickOvenRecipeExists (final Item item)
+    {
+        for (IBrickOvenRecipe recipe : brickOvenRecipeInstance.getRecipeList())
+        {
+            if (StringUtils.equalsIgnoreCase(recipe.getRecipeOutput().getItem().getUnlocalizedName(),
+                                             item.getUnlocalizedName()))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean campfireRecipeExists (final Item item)
+    {
+        for (ItemStack output : (Collection<ItemStack>) campfireRecipeInstance.getSmeltingList().values())
+        {
+            if (StringUtils.equalsIgnoreCase(output.getItem().getUnlocalizedName(),
+                                             item.getUnlocalizedName()))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean kilnRecipeExists (final Item item)
+    {
+        for (ItemStack output : (Collection<ItemStack>) kilnRecipeInstance.getSmeltingList().values())
+        {
+            if (StringUtils.equalsIgnoreCase(output.getItem().getUnlocalizedName(),
+                                             item.getUnlocalizedName()))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean smelterRecipeExists (final Item item)
+    {
+        for (SmelterRecipe recipe : smelterRecipeInstance.getRecipes())
+        {
+            if (StringUtils.equalsIgnoreCase(recipe.getOutput().getItem().getUnlocalizedName(),
                                              item.getUnlocalizedName()))
             {
                 return true;
@@ -415,6 +487,22 @@ public class BetterBeginningsHandler
             this.itemStack1 = itemStack1;
             this.itemStack2 = itemStack2;
             this.itemStack3 = itemStack3;
+        }
+    }
+
+    public static void addNerfedCampfireRecipe(final ItemStack inputStack, final ItemStack outputStack, final float experience)
+    {
+        if (inputStack != null && outputStack != null)
+        {
+            campfireRecipeInstance.addRecipe(inputStack, outputStack, experience);
+        }
+    }
+
+    public static void addNerfedCampfirePanRecipe(final ItemStack inputStack, final ItemStack outputStack, final float experience)
+    {
+        if (inputStack != null && outputStack != null)
+        {
+            campfirePanRecipeInstance.addRecipe(inputStack, outputStack, experience);
         }
     }
 }
