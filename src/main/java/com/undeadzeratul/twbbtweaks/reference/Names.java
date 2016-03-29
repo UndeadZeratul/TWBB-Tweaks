@@ -24,5 +24,6 @@ public class Names
         public static final String THERMAL_FOUNDATION = "ThermalFoundation";
         public static final String TWILIGHT_FOREST    = "TwilightForest";
         public static final String TIC                = "TConstruct";
+        public static final String TISTEELWORKS       = "TSteelworks";
     }
 }

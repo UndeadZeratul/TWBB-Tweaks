@@ -25,6 +25,7 @@ public class Reference
                                                     + "after:SteamCraft;"
                                                     + "after:TConstruct@[1.7.10-1.8.8.build991,);"
                                                     + "after:ThermalFoundation;"
+                                                    + "after:TSteelworks;"
                                                     + "after:TwilightForest;"
                                                     + "before:aobd";
 }

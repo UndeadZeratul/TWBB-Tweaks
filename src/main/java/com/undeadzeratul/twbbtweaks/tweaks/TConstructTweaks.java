@@ -6,8 +6,11 @@ import java.util.Set;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.nincraft.nincraftlib.handler.TConstructHandler;
+import com.undeadzeratul.twbbtweaks.handler.TSteelworksHandler;
+import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
 import com.undeadzeratul.twbbtweaks.reference.Settings;
 
+import cpw.mods.fml.common.Loader;
 import net.minecraftforge.fluids.FluidRegistry;
 import tconstruct.tools.items.Pattern;
 
@@ -63,6 +66,12 @@ public class TConstructTweaks
         for (final String fluidName : buildFluidDictEntries(Settings.TConstruct.meltingTemps.keySet()))
         {
             TConstructHandler.setMeltingTemp(fluidName, Settings.TConstruct.meltingTemps.get(fluidName));
+
+            if (Loader.isModLoaded(ModIds.TISTEELWORKS))
+            {
+                TSteelworksHandler.init();
+                TSteelworksHandler.setMeltingTemp(fluidName, Settings.TConstruct.meltingTemps.get(fluidName));
+            }
         }
     }
 
