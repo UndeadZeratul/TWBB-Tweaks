@@ -31,7 +31,7 @@ public class TSteelworksHandler
         {
             // FluidStack's getUnlocalizedName method sticks "fluid." before the actual name,
             // so I guess we'll be doing the same thing here
-            String prefixedFluidName = fluidName.startsWith("fluid.")
+            String prefixedFluidName = !fluidName.startsWith("fluid.")
                     ? "fluid." + fluidName
                     : fluidName;
 
