@@ -1,6 +1,7 @@
 package com.undeadzeratul.twbbtweaks.handler;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -96,8 +97,7 @@ public class BetterBeginningsHandler
     {
         for (ItemStack output : (Collection<ItemStack>) kilnRecipeInstance.getSmeltingList().values())
         {
-            if (StringUtils.equalsIgnoreCase(output.getItem().getUnlocalizedName(),
-                                             item.getUnlocalizedName()))
+            if (StringUtils.equalsIgnoreCase(output.getItem().getUnlocalizedName(), item.getUnlocalizedName()))
             {
                 return true;
             }
@@ -149,9 +149,9 @@ public class BetterBeginningsHandler
         {
             ItemArmor armor = (ItemArmor) outputStack.getItem();
 
-            advCraftingInstance.addAdvancedRecipe(outputStack,
-                                                  buildAdditionalArmorMaterials(armor, extraMaterial),
-                                                  buildArmorCraftingPattern(armor, craftingMaterial));
+            addNerfedRecipe(outputStack,
+                            buildArmorCraftingPattern(armor, craftingMaterial),
+                            buildAdditionalArmorMaterials(armor, extraMaterial));
         }
     }
 
@@ -259,13 +259,14 @@ public class BetterBeginningsHandler
         return StringUtils.EMPTY;
     }
 
-    public static void addNerfedToolRecipe (final ItemStack outputStack, final Object craftingMaterial, final Object handleMaterial, final Object extraMaterial)
+    public static void addNerfedToolRecipe (final ItemStack outputStack, final Object craftingMaterial,
+                                            final Object handleMaterial, final Object extraMaterial)
     {
         if (craftingMaterial != null && extraMaterial != null && outputStack != null)
         {
-            advCraftingInstance.addAdvancedRecipe(outputStack,
-                                                  buildAdditionalToolMaterials(outputStack.getItem(), extraMaterial),
-                                                  buildToolCraftingPattern(outputStack.getItem(), craftingMaterial, handleMaterial));
+            addNerfedRecipe(outputStack,
+                            buildToolCraftingPattern(outputStack.getItem(), craftingMaterial, handleMaterial),
+                            buildAdditionalToolMaterials(outputStack.getItem(), extraMaterial));
         }
     }
 
@@ -296,7 +297,8 @@ public class BetterBeginningsHandler
                 };
     }
 
-    private static Object[] buildToolCraftingPattern (final Item output, final Object craftingMaterial, final Object handleMaterial)
+    private static Object[] buildToolCraftingPattern (final Item output, final Object craftingMaterial,
+                                                      final Object handleMaterial)
     {
         Object[] ret = new Object[0];
 
@@ -304,7 +306,7 @@ public class BetterBeginningsHandler
         {
             ret = (Object[]) craftingMaterial;
         }
-        else if(output instanceof ItemPickaxe)
+        else if (output instanceof ItemPickaxe)
         {
             ret = new Object[]
             {
@@ -409,7 +411,7 @@ public class BetterBeginningsHandler
         return ret;
     }
 
-    private static AdditionalCosts getAdditionalCosts(final Item output)
+    private static AdditionalCosts getAdditionalCosts (final Item output)
     {
         int index = 0;
 
@@ -417,7 +419,7 @@ public class BetterBeginningsHandler
         {
             index = ((ItemArmor) output).armorType;
         }
-        else if(output instanceof ItemPickaxe)
+        else if (output instanceof ItemPickaxe)
         {
             index = 4;
         }
@@ -490,7 +492,8 @@ public class BetterBeginningsHandler
         }
     }
 
-    public static void addNerfedCampfireRecipe(final ItemStack inputStack, final ItemStack outputStack, final float experience)
+    public static void addNerfedCampfireRecipe (final ItemStack inputStack, final ItemStack outputStack,
+                                                final float experience)
     {
         if (inputStack != null && outputStack != null)
         {
@@ -498,11 +501,33 @@ public class BetterBeginningsHandler
         }
     }
 
-    public static void addNerfedCampfirePanRecipe(final ItemStack inputStack, final ItemStack outputStack, final float experience)
+    public static void addNerfedCampfirePanRecipe (final ItemStack inputStack, final ItemStack outputStack,
+                                                   final float experience)
     {
         if (inputStack != null && outputStack != null)
         {
             campfirePanRecipeInstance.addRecipe(inputStack, outputStack, experience);
+        }
+    }
+
+    public static void addNerfedRecipe (final ItemStack outputStack, final Object[] craftingPattern,
+                                        final Object[] additionalMaterials)
+    {
+        advCraftingInstance.addAdvancedRecipe(outputStack, additionalMaterials, craftingPattern);
+    }
+
+    public static void removeNerfedRecipes (final ItemStack outputStack)
+    {
+        Iterator<AdvancedRecipe> iter = advCraftingInstance.getRecipeList().iterator();
+
+        while (iter.hasNext())
+        {
+            AdvancedRecipe recipe = iter.next();
+
+            if (recipe.getRecipeOutput().isItemEqual(outputStack))
+            {
+                iter.remove();
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ArmorRecipeTweaks extends AbstractBBTweaks
 {
+    private static final String ANY_IRON_INGOT        = "ingotIron";
     private static final String ANY_IRON_NUGGET       = "nuggetIron";
     private static final String ANY_KREKNORITE_NUGGET = "nuggetKreknorite";
     private static final String ANY_METEORITE_NUGGET  = "nuggetMeteorite";
@@ -24,11 +25,17 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
     private static final String ANY_STRING            = "itemString";
     private static final String ANY_WOOD_LOG          = "logWood";
 
+    private static final char   ITEM_NAME_SEPARATOR   = ':';
+
+    private static Item         leather;
+    private static Item         leatherStrip;
     private static Item         naturaItem;
     private static Item         woolBlock;
 
     public ArmorRecipeTweaks()
     {
+        leather = GameRegistry.findItem(ModIds.MINECRAFT, "leather");
+        leatherStrip = GameRegistry.findItem(ModIds.BETTER_BEGINNINGS, "leatherStrip");
         naturaItem = GameRegistry.findItem(ModIds.NATURA, "barleyFood");
         woolBlock = GameRegistry.findItem(ModIds.MINECRAFT, "wool");
     }
@@ -41,6 +48,11 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
         if (Loader.isModLoaded(ModIds.BETTER_STORAGE))
         {
             nerfBetterStorageArmor();
+        }
+
+        if (Loader.isModLoaded(ModIds.ENVIROMINE))
+        {
+            nerfEnviromineArmor();
         }
 
         if (Loader.isModLoaded(ModIds.FALLING_METEORS))
@@ -131,28 +143,99 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
     {
         ItemStack cardboardSheet = new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardSheet"));
 
-        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardHelmet")),
-                        cardboardSheet, new Object[]
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardHelmet")), cardboardSheet,
+                        new Object[]
                         {
                             ANY_STRING, 3,
                             new ItemStack(woolBlock, 2, OreDictionary.WILDCARD_VALUE)
                         });
-        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardChestplate")),
-                        cardboardSheet, new Object[]
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardChestplate")), cardboardSheet,
+                        new Object[]
                         {
                             ANY_STRING, 2,
                             new ItemStack(woolBlock, 4, OreDictionary.WILDCARD_VALUE)
                         });
-        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardLeggings")),
-                        cardboardSheet, new Object[]
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardLeggings")), cardboardSheet,
+                        new Object[]
                         {
                             ANY_STRING, 4,
                             new ItemStack(woolBlock, 1, OreDictionary.WILDCARD_VALUE)
                         });
-        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardBoots")),
-                        cardboardSheet, new Object[]
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardBoots")), cardboardSheet,
+                        new Object[]
                         {
                             ANY_STRING, 2,
+                            new ItemStack(woolBlock, 3, OreDictionary.WILDCARD_VALUE)
+                        });
+    }
+
+    private void nerfEnviromineArmor ()
+    {
+        // Camel Pack (Empty)
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.ENVIROMINE + ITEM_NAME_SEPARATOR + "camelPack", 0, 1,
+                                                   "{camelPackFill: 0, camelPackMax: 100, isCamelPack: true}"),
+                        new Object[]
+                        {
+                            "lll",
+                            "lbl",
+                            "lll",
+                            'l',
+                            new ItemStack(leather),
+                            'b',
+                            new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "glass_bottle"))
+                        },
+                        new Object[]
+                        {
+                            new ItemStack(leatherStrip, 4),
+                            ANY_STRING, 4
+                        });
+
+        // Camel Pack (Quarter Full)
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.ENVIROMINE + ITEM_NAME_SEPARATOR + "camelPack", 0, 1,
+                                                   "{camelPackFill: 25, camelPackMax: 100, isCamelPack: true}"),
+                        new Object[]
+                        {
+                            "lll",
+                            "lbl",
+                            "lll",
+                            'l',
+                            new ItemStack(leather),
+                            'b',
+                            new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "potion"))
+                        },
+                        new Object[]
+                        {
+                            new ItemStack(leatherStrip, 4),
+                            ANY_STRING, 4
+                        });
+
+        // Hard Hat
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.ENVIROMINE, "hardHat")), ANY_IRON_INGOT,
+                        new Object[]
+                        {
+                            new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "redstone_lamp")),
+                            "dyeYellow", 2,
+                            new ItemStack(leatherStrip, 3),
+                            new ItemStack(woolBlock, 3, OreDictionary.WILDCARD_VALUE)
+                        });
+
+        // Respirator
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.ENVIROMINE, "gasMask")),
+                        new Object[]
+                        {
+                            "iii",
+                            "igi",
+                            "fif",
+                            'i',
+                            ANY_IRON_INGOT,
+                            'g',
+                            "paneGlassColorless",
+                            'f',
+                            new ItemStack(GameRegistry.findItem(ModIds.ENVIROMINE, "airFilter"))
+                        },
+                        new Object[]
+                        {
+                            new ItemStack(leatherStrip, 3),
                             new ItemStack(woolBlock, 3, OreDictionary.WILDCARD_VALUE)
                         });
     }
@@ -162,48 +245,48 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
         // Meteorite
         ItemStack meteoriteIngot = new ItemStack(GameRegistry.findItem(ModIds.FALLING_METEORS, "MeteoriteIngot"));
 
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "MetHelm", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "MetHelm", 0, 1,
                                                    "{ench: [{lvl: 1, id: 157}], enchant-set: true}"),
                         meteoriteIngot, ANY_METEORITE_NUGGET);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "MetBody", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "MetBody", 0, 1,
                                                    "{ench: [{lvl: 1, id: 157}], enchant-set: true}"),
                         meteoriteIngot, ANY_METEORITE_NUGGET);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "MetLegs", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "MetLegs", 0, 1,
                                                    "{ench: [{lvl: 1, id: 157}], enchant-set: true}"),
                         meteoriteIngot, ANY_METEORITE_NUGGET);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "MetBoots", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "MetBoots", 0, 1,
                                                    "{ench: [{lvl: 1, id: 157}], enchant-set: true}"),
                         meteoriteIngot, ANY_METEORITE_NUGGET);
 
         // Frozen Iron
         ItemStack frozenIronIngot = new ItemStack(GameRegistry.findItem(ModIds.FALLING_METEORS, "FrozenIron"));
 
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "FrezHelm", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "FrezHelm", 0, 1,
                                                    "{ench: [{lvl: 3, id: 5}], enchant-set: true}"),
                         frozenIronIngot, ANY_IRON_NUGGET);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "FrezBody", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "FrezBody", 0, 1,
                                                    "{ench: [{lvl: 1, id: 6}], enchant-set: true}"),
                         frozenIronIngot, ANY_IRON_NUGGET);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "FrezLegs", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "FrezLegs", 0, 1,
                                                    "{ench: [{lvl: 1, id: 158}], enchant-set: true}"),
                         frozenIronIngot, ANY_IRON_NUGGET);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "FrezBoots", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "FrezBoots", 0, 1,
                                                    "{ench: [{lvl: 1, id: 158}], enchant-set: true}"),
                         frozenIronIngot, ANY_IRON_NUGGET);
 
         // Kreknorite
         ItemStack kreknoriteIngot = new ItemStack(GameRegistry.findItem(ModIds.FALLING_METEORS, "KreknoriteIngot"));
 
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "KrekHelm", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "KrekHelm", 0, 1,
                                                    "{ench: [{lvl: 4, id: 1}], enchant-set: true}"),
                         kreknoriteIngot, ANY_KREKNORITE_NUGGET);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "KrekBody", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "KrekBody", 0, 1,
                                                    "{ench: [{lvl: 4, id: 1}], enchant-set: true}"),
                         kreknoriteIngot, ANY_KREKNORITE_NUGGET);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "KrekLegs", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "KrekLegs", 0, 1,
                                                    "{ench: [{lvl: 4, id: 1}], enchant-set: true}"),
                         kreknoriteIngot, ANY_KREKNORITE_NUGGET);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "KrekBoots", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ITEM_NAME_SEPARATOR + "KrekBoots", 0, 1,
                                                    "{ench: [{lvl: 4, id: 1}], enchant-set: true}"),
                         kreknoriteIngot, ANY_KREKNORITE_NUGGET);
     }
@@ -240,28 +323,28 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
     {
         ItemStack impLeather = new ItemStack(naturaItem, 1, 6);
 
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.NATURA + ':' + "natura.armor.imphelmet", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.NATURA + ITEM_NAME_SEPARATOR + "natura.armor.imphelmet", 0, 1,
                                                    "{ench: [{lvl: 1, id: 0}, {lvl: 1, id: 1}]}"),
                         impLeather, new Object[]
                         {
                             new ItemStack(naturaItem, 3, 7),
                             new ItemStack(woolBlock, 2, OreDictionary.WILDCARD_VALUE)
                         });
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.NATURA + ':' + "natura.armor.impjerkin", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.NATURA + ITEM_NAME_SEPARATOR + "natura.armor.impjerkin", 0, 1,
                                                    "{ench: [{lvl: 1, id: 3}, {lvl: 1, id: 1}]}"),
                         impLeather, new Object[]
                         {
                             new ItemStack(naturaItem, 2, 7),
                             new ItemStack(woolBlock, 4, OreDictionary.WILDCARD_VALUE)
                         });
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.NATURA + ':' + "natura.armor.impleggings", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.NATURA + ITEM_NAME_SEPARATOR + "natura.armor.impleggings", 0, 1,
                                                    "{ench: [{lvl: 1, id: 4}, {lvl: 1, id: 1}]}"),
                         impLeather, new Object[]
                         {
                             new ItemStack(naturaItem, 4, 7),
                             new ItemStack(woolBlock, 1, OreDictionary.WILDCARD_VALUE)
                         });
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.NATURA + ':' + "natura.armor.impboots", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.NATURA + ITEM_NAME_SEPARATOR + "natura.armor.impboots", 0, 1,
                                                    "{ench: [{lvl: 1, id: 2}, {lvl: 1, id: 1}]}"),
                         impLeather, new Object[]
                         {
@@ -272,14 +355,14 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
 
     private static void nerfPneumaticCraftArmor ()
     {
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.PNEUMATICCRAFT + ':' + "pneumaticHelmet", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.PNEUMATICCRAFT + ITEM_NAME_SEPARATOR + "pneumaticHelmet", 0, 1,
                                                    "{volume: 12000, UpgradeInventory: {}, air: 0}"),
                         new ItemStack(GameRegistry.findItem(ModIds.PNEUMATICCRAFT, "ingotIronCompressed")),
                         new Object[]
                         {
                             new ItemStack(GameRegistry.findItem(ModIds.PNEUMATICCRAFT, "airCanister"), 4, 30000),
                             new ItemStack(GameRegistry.findItem(ModIds.PNEUMATICCRAFT, "printedCircuitBoard"), 1),
-                            new ItemStack(GameRegistry.findItem(ModIds.BETTER_BEGINNINGS, "leatherStrip"), 3),
+                            new ItemStack(leatherStrip, 3),
                             new ItemStack(woolBlock, 2, OreDictionary.WILDCARD_VALUE)
                         });
     }
@@ -312,42 +395,42 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
         // Ironwood
         ItemStack ironwoodIngot = new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.ironwoodIngot"));
 
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.ironwoodHelm", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.ironwoodHelm", 0, 1,
                                                    "{ench: [{lvl: 1, id: 6}]}"),
                         ironwoodIngot);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.ironwoodPlate", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.ironwoodPlate", 0, 1,
                                                    "{ench: [{lvl: 1, id: 0}]}"),
                         ironwoodIngot);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.ironwoodLegs", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.ironwoodLegs", 0, 1,
                                                    "{ench: [{lvl: 1, id: 0}]}"),
                         ironwoodIngot);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.ironwoodBoots", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.ironwoodBoots", 0, 1,
                                                    "{ench: [{lvl: 1, id: 2}]}"),
                         ironwoodIngot);
 
         // Steeleaf
         ItemStack steeleaf = new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.steeleafIngot"));
 
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.steeleafHelm", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.steeleafHelm", 0, 1,
                                                    "{ench: [{lvl: 2, id: 4}]}"),
                         steeleaf);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.steeleafPlate", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.steeleafPlate", 0, 1,
                                                    "{ench: [{lvl: 2, id: 3}]}"),
                         steeleaf);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.steeleafLegs", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.steeleafLegs", 0, 1,
                                                    "{ench: [{lvl: 2, id: 1}]}"),
                         steeleaf);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.steeleafBoots", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.steeleafBoots", 0, 1,
                                                    "{ench: [{lvl: 2, id: 2}]}"),
                         steeleaf);
 
         // Naga
         ItemStack nagaScale = new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.nagaScale"));
 
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.plateNaga", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.plateNaga", 0, 1,
                                                    "{ench: [{lvl: 3, id: 1}]}"),
                         nagaScale);
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.legsNaga", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.legsNaga", 0, 1,
                                                    "{ench: [{lvl: 3, id: 0}]}"),
                         nagaScale);
 
@@ -392,35 +475,35 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.knightlyBoots")),
                         knightmetalIngot, new ItemStack(knightmetalShard, 3));
 
-        ItemStack leather = new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "leather"));
+        ItemStack leatherStack = new ItemStack(leather);
 
         // Arctic
         Item arcticFur = GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.arcticFur");
 
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.arcticHelm")),
-                        leather, new ItemStack(arcticFur, 2));
+                        leatherStack, new ItemStack(arcticFur, 2));
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.arcticPlate")),
-                        leather, new ItemStack(arcticFur, 6));
+                        leatherStack, new ItemStack(arcticFur, 6));
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.arcticLegs")),
-                        leather, new ItemStack(arcticFur, 4));
+                        leatherStack, new ItemStack(arcticFur, 4));
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.arcticBoots")),
-                        leather, new ItemStack(arcticFur, 3));
+                        leatherStack, new ItemStack(arcticFur, 3));
 
         // Alpha Yeti
         Item alphaYetiFur = GameRegistry.findItem(ModIds.TWILIGHT_FOREST, "item.alphaFur");
 
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.yetiHelm", 0, 1,
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.yetiHelm", 0, 1,
                                                    "{ench: [{lvl: 2, id: 0}]}"),
-                        leather, new ItemStack(alphaYetiFur, 2));
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.yetiPlate", 0, 1,
+                        leatherStack, new ItemStack(alphaYetiFur, 2));
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.yetiPlate", 0, 1,
                                                    "{ench: [{lvl: 2, id: 0}]}"),
-                        leather, new ItemStack(alphaYetiFur, 6));
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.yetiLegs", 0, 1,
+                        leatherStack, new ItemStack(alphaYetiFur, 6));
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.yetiLegs", 0, 1,
                                                    "{ench: [{lvl: 2, id: 0}]}"),
-                        leather, new ItemStack(alphaYetiFur, 4));
-        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ':' + "item.yetiBoots", 0, 1,
+                        leatherStack, new ItemStack(alphaYetiFur, 4));
+        nerfArmorRecipe(GameRegistry.makeItemStack(ModIds.TWILIGHT_FOREST + ITEM_NAME_SEPARATOR + "item.yetiBoots", 0, 1,
                                                    "{ench: [{lvl: 2, id: 0}, {lvl: 4, id: 2}]}"),
-                        leather, new ItemStack(alphaYetiFur, 3));
+                        leatherStack, new ItemStack(alphaYetiFur, 3));
     }
 
     private static void nerfArmorRecipe (final ItemStack outputStack, final Object craftingMaterial)

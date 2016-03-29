@@ -9,6 +9,7 @@ public class Names
         public static final String BETTER_STORAGE     = "betterstorage";
         public static final String BLOOD_MAGIC        = "AWWayofTime";
         public static final String BOP                = "BiomesOPlenty";
+        public static final String ENVIROMINE         = "enviromine";
         public static final String FALLING_METEORS    = "meteors";
         public static final String FSP                = "Steamcraft";
         public static final String HAMMERZ            = "Hammerz";
