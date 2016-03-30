@@ -9,8 +9,6 @@ public class Settings
 {
     public static class BetterBeginnings
     {
-        public static boolean disableBBSmelter;
-
         public static boolean enableBBTweaks;
 
         public static boolean nerfCraftingRecipes;
@@ -38,6 +36,7 @@ public class Settings
 
     public static class Tweaks
     {
+        public static String[] disabledItems;
         public static String[] oreDictionaryAdditions;
     }
 }

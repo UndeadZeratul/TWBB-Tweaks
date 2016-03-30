@@ -48,9 +48,12 @@ public class ConfigurationHandler
 
     private static void loadTweakConfigs (final String category)
     {
-        Settings.Tweaks.oreDictionaryAdditions = configuration.getStringList("oreDictionaryAdditions", category,
-                                                                             new String[]
-        {}, "Add items to the ore dictionary formatted as modID|itemName|Metadata|oreDictionaryName");
+        Settings.Tweaks.disabledItems = configuration
+                .getStringList("disabledItems", category, new String[0],
+                               "Disable items by removing their crafting recipe(s), formatted as 'modID|itemName|metadata'.");
+        Settings.Tweaks.oreDictionaryAdditions = configuration
+                .getStringList("oreDictionaryAdditions", category, new String[0],
+                               "Add items to the ore dictionary formatted as 'modID|itemName|metadata|oreDictionaryName'.");
     }
 
     private static void loadTConstructConfigs (final String category)
@@ -75,10 +78,6 @@ public class ConfigurationHandler
     {
         Settings.BetterBeginnings.enableBBTweaks = configuration
                 .getBoolean("enableBBTweaks", category, true, "This will enable/disable all BetterBeginnings tweaks.");
-
-        Settings.BetterBeginnings.disableBBSmelter = configuration
-                .getBoolean("disableBBSmelter", category, true,
-                            "Set this to true to disable the use of the BetterBeginnings Smelter, to enforce the usage of the TiC Smeltery.");
 
         loadBBRecipeNerfConfigs(category + ".recipeNerfs");
     }

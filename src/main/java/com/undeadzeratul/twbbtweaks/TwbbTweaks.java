@@ -5,6 +5,7 @@ import com.undeadzeratul.twbbtweaks.proxy.IProxy;
 import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
 import com.undeadzeratul.twbbtweaks.reference.Reference;
 import com.undeadzeratul.twbbtweaks.tweaks.BetterBeginningsTweaks;
+import com.undeadzeratul.twbbtweaks.tweaks.CraftingRecipeTweaks;
 import com.undeadzeratul.twbbtweaks.tweaks.OreDictionaryRegister;
 import com.undeadzeratul.twbbtweaks.tweaks.TConstructTweaks;
 import com.undeadzeratul.twbbtweaks.utility.LogHelper;
@@ -64,6 +65,8 @@ public class TwbbTweaks
     @Mod.EventHandler
     public void postInit (final FMLPostInitializationEvent event)
     {
+        CraftingRecipeTweaks.init();
+
         initBetterBeginningsCompat();
         initTConstructCompat();
         LogHelper.info("Post-Init Complete");

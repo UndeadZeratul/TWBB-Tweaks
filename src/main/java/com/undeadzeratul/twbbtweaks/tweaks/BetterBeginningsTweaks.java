@@ -1,7 +1,5 @@
 package com.undeadzeratul.twbbtweaks.tweaks;
 
-import com.undeadzeratul.twbbtweaks.handler.CraftingRecipeHandler;
-import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
 import com.undeadzeratul.twbbtweaks.reference.Settings;
 import com.undeadzeratul.twbbtweaks.tweaks.betterbeginnings.ArmorRecipeTweaks;
 import com.undeadzeratul.twbbtweaks.tweaks.betterbeginnings.BrickOvenRecipeTweaks;
@@ -10,19 +8,12 @@ import com.undeadzeratul.twbbtweaks.tweaks.betterbeginnings.KilnRecipeTweaks;
 import com.undeadzeratul.twbbtweaks.tweaks.betterbeginnings.MiscRecipeTweaks;
 import com.undeadzeratul.twbbtweaks.tweaks.betterbeginnings.ToolRecipeTweaks;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
 public class BetterBeginningsTweaks
 {
     public static void init ()
     {
         if (Settings.BetterBeginnings.enableBBTweaks)
         {
-            if (Settings.BetterBeginnings.disableBBSmelter)
-            {
-                disableBBSmelter();
-            }
-
             if (Settings.BetterBeginnings.nerfCraftingRecipes)
             {
                 if (Settings.BetterBeginnings.nerfAllArmorRecipes)
@@ -65,10 +56,5 @@ public class BetterBeginningsTweaks
                 }
             }
         }
-    }
-
-    private static void disableBBSmelter ()
-    {
-        CraftingRecipeHandler.removeCraftingRecipes(GameRegistry.findItem(ModIds.BETTER_BEGINNINGS, "smelter"));
     }
 }
