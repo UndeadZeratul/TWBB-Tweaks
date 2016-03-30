@@ -1,14 +1,19 @@
 package com.undeadzeratul.twbbtweaks.tweaks;
 
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.nincraft.nincraftlib.handler.TConstructHandler;
+import com.undeadzeratul.twbbtweaks.handler.TSteelworksHandler;
+import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
 import com.undeadzeratul.twbbtweaks.reference.Settings;
 
+import cpw.mods.fml.common.Loader;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import tconstruct.tools.items.Pattern;
 
 public class TConstructTweaks
@@ -46,6 +51,11 @@ public class TConstructTweaks
     {
         if (Settings.TConstruct.enableTiCTweaks)
         {
+            if (Settings.TConstruct.adjustAlloyRatios)
+            {
+                adjustAlloyRatios();
+            }
+
             if (Settings.TConstruct.adjustMeltingTemps)
             {
                 adjustMeltingTemps();
@@ -58,11 +68,26 @@ public class TConstructTweaks
         }
     }
 
+    private static void adjustAlloyRatios ()
+    {
+        for (Entry<FluidStack, List<FluidStack>> alloyEntry : Settings.TConstruct.alloyRatios.entrySet())
+        {
+            TConstructHandler.removeAlloy(alloyEntry.getKey());
+            TConstructHandler.addAlloy(alloyEntry.getKey(), alloyEntry.getValue().toArray(new FluidStack[0]));
+        }
+    }
+
     private static void adjustMeltingTemps ()
     {
         for (final String fluidName : buildFluidDictEntries(Settings.TConstruct.meltingTemps.keySet()))
         {
             TConstructHandler.setMeltingTemp(fluidName, Settings.TConstruct.meltingTemps.get(fluidName));
+
+            if (Loader.isModLoaded(ModIds.TISTEELWORKS))
+            {
+                TSteelworksHandler.init();
+                TSteelworksHandler.setMeltingTemp(fluidName, Settings.TConstruct.meltingTemps.get(fluidName));
+            }
         }
     }
 
