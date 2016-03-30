@@ -1,6 +1,7 @@
 package com.undeadzeratul.twbbtweaks.tweaks;
 
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
@@ -12,6 +13,7 @@ import com.undeadzeratul.twbbtweaks.reference.Settings;
 
 import cpw.mods.fml.common.Loader;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import tconstruct.tools.items.Pattern;
 
 public class TConstructTweaks
@@ -49,6 +51,11 @@ public class TConstructTweaks
     {
         if (Settings.TConstruct.enableTiCTweaks)
         {
+            if (Settings.TConstruct.adjustAlloyRatios)
+            {
+                adjustAlloyRatios();
+            }
+
             if (Settings.TConstruct.adjustMeltingTemps)
             {
                 adjustMeltingTemps();
@@ -58,6 +65,15 @@ public class TConstructTweaks
             {
                 adjustToolPartcosts();
             }
+        }
+    }
+
+    private static void adjustAlloyRatios ()
+    {
+        for (Entry<FluidStack, List<FluidStack>> alloyEntry : Settings.TConstruct.alloyRatios.entrySet())
+        {
+            TConstructHandler.removeAlloy(alloyEntry.getKey());
+            TConstructHandler.addAlloy(alloyEntry.getKey(), alloyEntry.getValue().toArray(new FluidStack[0]));
         }
     }
 
