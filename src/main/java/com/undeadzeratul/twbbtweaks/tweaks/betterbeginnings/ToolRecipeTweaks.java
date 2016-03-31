@@ -89,9 +89,7 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
     {
         for (Item item : (Iterable<Item>) GameData.getItemRegistry())
         {
-            if ((item instanceof ItemTool || item instanceof ItemSword) && !isBBTool(item)
-                    && !BetterBeginningsHandler.advCraftingRecipeExists(item)
-                    && CraftingRecipeHandler.craftingRecipeExists(item))
+            if ((item instanceof ItemTool || item instanceof ItemSword) && !isBBTool(item))
             {
                 String repairMaterial = BetterBeginningsHandler.getToolRepairMaterial(item);
 
@@ -544,7 +542,12 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
     private static void nerfToolRecipe (final ItemStack outputStack, final Object craftingMaterial,
                                         final Object handleMaterial, final Object additionalMaterials)
     {
-        CraftingRecipeHandler.removeCraftingRecipes(outputStack);
-        BetterBeginningsHandler.addNerfedToolRecipe(outputStack, craftingMaterial, handleMaterial, additionalMaterials);
+        if (!BetterBeginningsHandler.advCraftingRecipeExists(outputStack) &&
+            CraftingRecipeHandler.craftingRecipeExists(outputStack))
+        {
+            CraftingRecipeHandler.removeCraftingRecipes(outputStack);
+            BetterBeginningsHandler.addNerfedToolRecipe(outputStack, craftingMaterial, handleMaterial,
+                                                        additionalMaterials);
+        }
     }
 }

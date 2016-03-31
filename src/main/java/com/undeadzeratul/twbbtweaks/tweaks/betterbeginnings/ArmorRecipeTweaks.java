@@ -101,9 +101,7 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
     {
         for (Item item : (Iterable<Item>) GameData.getItemRegistry())
         {
-            if (item instanceof ItemArmor
-                && !BetterBeginningsHandler.advCraftingRecipeExists(item)
-                && CraftingRecipeHandler.craftingRecipeExists(item))
+            if (item instanceof ItemArmor)
             {
                 ItemArmor armor = (ItemArmor) item;
                 ItemStack outputStack = new ItemStack(armor);
@@ -514,7 +512,11 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
     private static void nerfArmorRecipe (final ItemStack outputStack, final Object craftingMaterial,
                                          final Object additionalMaterials)
     {
-        CraftingRecipeHandler.removeCraftingRecipes(outputStack);
-        BetterBeginningsHandler.addNerfedArmorRecipe(outputStack, craftingMaterial, additionalMaterials);
+        if (!BetterBeginningsHandler.advCraftingRecipeExists(outputStack) &&
+            CraftingRecipeHandler.craftingRecipeExists(outputStack))
+        {
+            CraftingRecipeHandler.removeCraftingRecipes(outputStack);
+            BetterBeginningsHandler.addNerfedArmorRecipe(outputStack, craftingMaterial, additionalMaterials);
+        }
     }
 }

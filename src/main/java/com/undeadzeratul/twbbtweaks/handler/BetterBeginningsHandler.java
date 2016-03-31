@@ -65,6 +65,11 @@ public class BetterBeginningsHandler
         return false;
     }
 
+    public static boolean advCraftingRecipeExists (final ItemStack itemStack)
+    {
+        return advCraftingRecipeExists(itemStack.getItem());
+    }
+
     public static boolean brickOvenRecipeExists (final Item item)
     {
         for (IBrickOvenRecipe recipe : brickOvenRecipeInstance.getRecipeList())
@@ -77,6 +82,11 @@ public class BetterBeginningsHandler
         }
 
         return false;
+    }
+
+    public static boolean brickOvenRecipeExists (final ItemStack itemStack)
+    {
+        return brickOvenRecipeExists(itemStack.getItem());
     }
 
     public static boolean campfireRecipeExists (final Item item)
@@ -93,6 +103,11 @@ public class BetterBeginningsHandler
         return false;
     }
 
+    public static boolean campfireRecipeExists (final ItemStack itemStack)
+    {
+        return campfireRecipeExists(itemStack.getItem());
+    }
+
     public static boolean kilnRecipeExists (final Item item)
     {
         for (ItemStack output : (Collection<ItemStack>) kilnRecipeInstance.getSmeltingList().values())
@@ -104,6 +119,11 @@ public class BetterBeginningsHandler
         }
 
         return false;
+    }
+
+    public static boolean kilnRecipeExists (final ItemStack itemStack)
+    {
+        return kilnRecipeExists(itemStack.getItem());
     }
 
     public static boolean smelterRecipeExists (final Item item)
@@ -118,6 +138,11 @@ public class BetterBeginningsHandler
         }
 
         return false;
+    }
+
+    public static boolean smelterRecipeExists (final ItemStack itemStack)
+    {
+        return smelterRecipeExists(itemStack.getItem());
     }
 
     public static String getArmorRepairMaterial (final ItemArmor armor)

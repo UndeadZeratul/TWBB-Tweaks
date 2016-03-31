@@ -123,8 +123,11 @@ public class MiscRecipeTweaks extends AbstractBBTweaks
     private static void nerfRecipe (final ItemStack outputStack, final Object[] craftingPattern,
                                     final Object[] additionalMaterials)
     {
-        CraftingRecipeHandler.removeCraftingRecipes(outputStack);
-        BetterBeginningsHandler.addNerfedRecipe(outputStack, craftingPattern, additionalMaterials);
+        if (!BetterBeginningsHandler.advCraftingRecipeExists(outputStack) &&
+            CraftingRecipeHandler.craftingRecipeExists(outputStack))
+        {
+            CraftingRecipeHandler.removeCraftingRecipes(outputStack);
+            BetterBeginningsHandler.addNerfedRecipe(outputStack, craftingPattern, additionalMaterials);
+        }
     }
-
 }
