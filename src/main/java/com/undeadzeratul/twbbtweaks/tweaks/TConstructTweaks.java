@@ -10,6 +10,7 @@ import com.nincraft.nincraftlib.handler.TConstructHandler;
 import com.undeadzeratul.twbbtweaks.handler.TSteelworksHandler;
 import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
 import com.undeadzeratul.twbbtweaks.reference.Settings;
+import com.undeadzeratul.twbbtweaks.tweaks.wrapper.MeltingRecipeWrapper;
 
 import cpw.mods.fml.common.Loader;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -51,6 +52,8 @@ public class TConstructTweaks
     {
         if (Settings.TConstruct.enableTiCTweaks)
         {
+            addMeltingRecipes();
+
             if (Settings.TConstruct.adjustAlloyRatios)
             {
                 adjustAlloyRatios();
@@ -65,6 +68,14 @@ public class TConstructTweaks
             {
                 adjustToolPartcosts();
             }
+        }
+    }
+
+    private static void addMeltingRecipes ()
+    {
+        for (MeltingRecipeWrapper recipe : Settings.TConstruct.newMeltingRecipes)
+        {
+            TConstructHandler.addMeltingRecipe(recipe.getInput(), recipe.getOutput(), recipe.getMeltingPoint(), recipe.getBlock());
         }
     }
 
