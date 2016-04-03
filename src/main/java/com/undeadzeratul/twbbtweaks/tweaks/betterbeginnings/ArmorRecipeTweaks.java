@@ -17,6 +17,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ArmorRecipeTweaks extends AbstractBBTweaks
 {
+    private static final Object ANY_BRASS_INGOT       = "ingotBrass";
+    private static final Object ANY_BRASS_NUGGET      = "nuggetBrass";
+    private static final Object ANY_BRASS_PLATE       = "plateSteamcraftBrass";
     private static final String ANY_IRON_INGOT        = "ingotIron";
     private static final String ANY_IRON_NUGGET       = "nuggetIron";
     private static final String ANY_KREKNORITE_NUGGET = "nuggetKreknorite";
@@ -139,6 +142,23 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
 
     private static void nerfBetterStorageArmor ()
     {
+        // Backpack
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "backpack")),
+                        new Object[] {
+                            "lll",
+                            "l l",
+                            "lll",
+                            'l',
+                            new ItemStack(leather)
+                        },
+                        new Object[] {
+                            ANY_BRASS_NUGGET, 6,
+                            new ItemStack(leatherStrip, 4),
+                            ANY_STRING, 2,
+                            new ItemStack(woolBlock, 4, OreDictionary.WILDCARD_VALUE)
+                        });
+
+        // Cardboard
         ItemStack cardboardSheet = new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardSheet"));
 
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.BETTER_STORAGE, "cardboardHelmet")), cardboardSheet,
@@ -291,6 +311,7 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
 
     private static void nerfFSPArmor ()
     {
+        // Gilded Iron
         ItemStack gildedGoldIngot = new ItemStack(GameRegistry.findItem(ModIds.FSP, "steamcraftIngot"), 1, 3);
 
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "helmGildedGold")), gildedGoldIngot,
@@ -301,6 +322,142 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
                         ANY_IRON_NUGGET);
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "feetGildedGold")), gildedGoldIngot,
                         ANY_IRON_NUGGET);
+
+        // Steam Exo-Suit
+        ItemStack brassPipe = new ItemStack(GameRegistry.findItem(ModIds.FSP, "pipe"));
+        ItemStack brassPiston = new ItemStack(GameRegistry.findItem(ModIds.FSP, "steamcraftCrafting"), 1, 0);
+
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorHead")),
+                        new Object[] {
+                            "pip",
+                            "t t",
+                            "pip",
+                            'p',
+                            brassPipe,
+                            'i',
+                            ANY_BRASS_INGOT,
+                            't',
+                            brassPiston
+                        },
+                        new Object[] {
+                            ANY_BRASS_NUGGET, 5,
+                            new ItemStack(leatherStrip, 3),
+                            new ItemStack(woolBlock, 2, OreDictionary.WILDCARD_VALUE)
+                        });
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorBody")),
+                        new Object[] {
+                            "t t",
+                            "pip",
+                            "iii",
+                            't',
+                            brassPiston,
+                            'p',
+                            brassPipe,
+                            'i',
+                            ANY_BRASS_INGOT
+                        },
+                        new Object[] {
+                            new ItemStack(GameRegistry.findItem(ModIds.FSP, "meter"), 1),
+                            ANY_BRASS_NUGGET, 8,
+                            new ItemStack(leatherStrip, 2),
+                            new ItemStack(woolBlock, 4, OreDictionary.WILDCARD_VALUE)
+                        });
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorLegs")),
+                        new Object[] {
+                            "pip",
+                            "t t",
+                            "i i",
+                            'p',
+                            brassPipe,
+                            't',
+                            brassPiston,
+                            'i',
+                            ANY_BRASS_INGOT
+                        },
+                        new Object[] {
+                            ANY_BRASS_NUGGET, 8,
+                            new ItemStack(leatherStrip, 4),
+                            new ItemStack(woolBlock, 1, OreDictionary.WILDCARD_VALUE)
+                        });
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorFeet")),
+                        new Object[] {
+                            "t t",
+                            "i i",
+                            't',
+                            brassPiston,
+                            'i',
+                            ANY_BRASS_INGOT
+                        },
+                        new Object[] {
+                            ANY_BRASS_NUGGET, 4,
+                            new ItemStack(leatherStrip, 2),
+                            new ItemStack(woolBlock, 3, OreDictionary.WILDCARD_VALUE)
+                        });
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorHead")),
+                        new Object[] {
+                            "pip",
+                            "t t",
+                            "pip",
+                            'p',
+                            brassPipe,
+                            'i',
+                            ANY_BRASS_PLATE,
+                            't',
+                            brassPiston
+                        },
+                        new Object[] {
+                            ANY_BRASS_NUGGET, 5,
+                            new ItemStack(leatherStrip, 3),
+                            new ItemStack(woolBlock, 2, OreDictionary.WILDCARD_VALUE)
+                        });
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorBody")),
+                        new Object[] {
+                            "t t",
+                            "pip",
+                            "iii",
+                            't',
+                            brassPiston,
+                            'p',
+                            brassPipe,
+                            'i',
+                            ANY_BRASS_PLATE
+                        },
+                        new Object[] {
+                            ANY_BRASS_NUGGET, 8,
+                            new ItemStack(leatherStrip, 2),
+                            new ItemStack(woolBlock, 4, OreDictionary.WILDCARD_VALUE)
+                        });
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorLegs")),
+                        new Object[] {
+                            "pip",
+                            "t t",
+                            "i i",
+                            'p',
+                            brassPipe,
+                            't',
+                            brassPiston,
+                            'i',
+                            ANY_BRASS_PLATE
+                        },
+                        new Object[] {
+                            ANY_BRASS_NUGGET, 8,
+                            new ItemStack(leatherStrip, 4),
+                            new ItemStack(woolBlock, 1, OreDictionary.WILDCARD_VALUE)
+                        });
+        nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorFeet")),
+                        new Object[] {
+                            "t t",
+                            "i i",
+                            't',
+                            brassPiston,
+                            'i',
+                            ANY_BRASS_PLATE
+                        },
+                        new Object[] {
+                            ANY_BRASS_NUGGET, 4,
+                            new ItemStack(leatherStrip, 2),
+                            new ItemStack(woolBlock, 3, OreDictionary.WILDCARD_VALUE)
+                        });
     }
 
     private static void nerfHarvestcraftArmor ()

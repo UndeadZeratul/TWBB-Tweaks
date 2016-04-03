@@ -22,9 +22,14 @@ import net.minecraftforge.oredict.OreDictionary;
 public class ToolRecipeTweaks extends AbstractBBTweaks
 {
     private static final String ANY_BLAZE_RON    = "itemBlazeRod";
+    private static final Object ANY_BRASS_INGOT  = "ingotBrass";
+    private static final Object ANY_BRASS_NUGGET = "nuggetBrass";
+    private static final Object ANY_BRASS_PLATE  = "plateSteamcraftBrass";
     private static final String ANY_IRON_ROD     = "rodIron";
     private static final String ANY_OBSIDIAN_ROD = "rodObsidian";
     private static final String ANY_STICK        = "stickWood";
+    private static final Object ANY_STEEL_INGOT  = "ingotSteel";
+    private static final Object ANY_STEEL_NUGGET = "nuggetSteel";
     private static final String ANY_STRING       = "itemString";
 
     private static Item         leatherStrip;
@@ -51,6 +56,11 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
         if (Loader.isModLoaded(ModIds.FALLING_METEORS))
         {
             nerfFallingMeteorsTools();
+        }
+
+        if (Loader.isModLoaded(ModIds.FSP))
+        {
+            nerfFSPTools();
         }
 
         if (Loader.isModLoaded(ModIds.HAMMERZ))
@@ -153,6 +163,140 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
         nerfToolRecipe(GameRegistry.makeItemStack(ModIds.FALLING_METEORS + ':' + "KrekSword", 0, 1,
                                                   "{ench: [{lvl: 2, id: 20}], enchant-set: true}"),
                        kreknoriteIngot, ANY_OBSIDIAN_ROD, new ItemStack(naturaItem, 2, 7));
+    }
+
+    private void nerfFSPTools ()
+    {
+        ItemStack brassPipe = new ItemStack(GameRegistry.findItem(ModIds.FSP, "pipe"));
+        ItemStack brassTurbine = new ItemStack(GameRegistry.findItem(ModIds.FSP, "steamcraftCrafting"), 1, 5);
+
+        // Steam Drill
+        ItemStack steamDrill = new ItemStack(GameRegistry.findItem(ModIds.FSP, "steamDrill"));
+
+        nerfToolRecipe(steamDrill,
+                       new Object[] {
+                           "bss",
+                           "pts",
+                           "bpb",
+                           'b',
+                           ANY_BRASS_INGOT,
+                           's',
+                           ANY_STEEL_INGOT,
+                           'p',
+                           brassPipe,
+                           't',
+                           brassTurbine
+                       },
+                       new Object[] {
+                           ANY_BRASS_NUGGET, 6,
+                           new ItemStack(leatherStrip, 3)
+                       });
+        nerfToolRecipe(steamDrill,
+                       new Object[] {
+                           "bss",
+                           "pts",
+                           "bpb",
+                           'b',
+                           ANY_BRASS_PLATE,
+                           's',
+                           ANY_STEEL_INGOT,
+                           'p',
+                           brassPipe,
+                           't',
+                           brassTurbine
+                       },
+                       new Object[] {
+                           ANY_BRASS_NUGGET, 6,
+                           new ItemStack(leatherStrip, 3)
+                       });
+
+        // Steam Axe
+        ItemStack steamAxe = new ItemStack(GameRegistry.findItem(ModIds.FSP, "steamAxe"));
+
+        nerfToolRecipe(steamAxe,
+                       new Object[] {
+                           "sns",
+                           "ptn",
+                           "bps",
+                           'b',
+                           ANY_BRASS_INGOT,
+                           'n',
+                           ANY_STEEL_NUGGET,
+                           's',
+                           ANY_STEEL_INGOT,
+                           'p',
+                           brassPipe,
+                           't',
+                           brassTurbine
+                       },
+                       new Object[] {
+                           ANY_BRASS_NUGGET, 6,
+                           new ItemStack(leatherStrip, 3)
+                       });
+        nerfToolRecipe(steamAxe,
+                       new Object[] {
+                           "sns",
+                           "ptn",
+                           "bps",
+                           'b',
+                           ANY_BRASS_PLATE,
+                           'n',
+                           ANY_STEEL_NUGGET,
+                           's',
+                           ANY_STEEL_INGOT,
+                           'p',
+                           brassPipe,
+                           't',
+                           brassTurbine
+                       },
+                       new Object[] {
+                           ANY_BRASS_NUGGET, 6,
+                           new ItemStack(leatherStrip, 3)
+                       });
+
+        // Steam Shovel
+        ItemStack steamShovel = new ItemStack(GameRegistry.findItem(ModIds.FSP, "steamShovel"));
+
+        nerfToolRecipe(steamShovel,
+                       new Object[] {
+                           "bns",
+                           "ptn",
+                           "bpb",
+                           'b',
+                           ANY_BRASS_INGOT,
+                           'n',
+                           ANY_STEEL_NUGGET,
+                           's',
+                           ANY_STEEL_INGOT,
+                           'p',
+                           brassPipe,
+                           't',
+                           brassTurbine
+                       },
+                       new Object[] {
+                           ANY_BRASS_NUGGET, 2,
+                           new ItemStack(leatherStrip, 3)
+                       });
+        nerfToolRecipe(steamShovel,
+                       new Object[] {
+                           "bns",
+                           "ptn",
+                           "bpb",
+                           'b',
+                           ANY_BRASS_PLATE,
+                           'n',
+                           ANY_STEEL_NUGGET,
+                           's',
+                           ANY_STEEL_INGOT,
+                           'p',
+                           brassPipe,
+                           't',
+                           brassTurbine
+                       },
+                       new Object[] {
+                           ANY_BRASS_NUGGET, 2,
+                           new ItemStack(leatherStrip, 3)
+                       });
     }
 
     private static void nerfHammerzTools ()
