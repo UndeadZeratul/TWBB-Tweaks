@@ -77,7 +77,7 @@ public class MiscRecipeTweaks extends AbstractBBTweaks
     private void nerfTConstructRecipes ()
     {
         ItemStack beacon = new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "beacon"));
-        BetterBeginningsHandler.removeNerfedRecipes(beacon);
+        BetterBeginningsHandler.removeNerfedCraftingRecipes(beacon);
         nerfRecipe(beacon,
                    new Object[]
                    {
@@ -102,7 +102,7 @@ public class MiscRecipeTweaks extends AbstractBBTweaks
     private void nerfTiSteelworksRecipes ()
     {
         ItemStack anvil = new ItemStack(GameRegistry.findItem(ModIds.MINECRAFT, "anvil"));
-        BetterBeginningsHandler.removeNerfedRecipes(anvil);
+        BetterBeginningsHandler.removeNerfedCraftingRecipes(anvil);
         nerfRecipe(anvil,
                    new Object[]
                    {
@@ -127,7 +127,7 @@ public class MiscRecipeTweaks extends AbstractBBTweaks
             CraftingRecipeHandler.craftingRecipeExists(outputStack))
         {
             CraftingRecipeHandler.removeCraftingRecipes(outputStack);
-            BetterBeginningsHandler.addNerfedRecipe(outputStack, craftingPattern, additionalMaterials);
+            BetterBeginningsHandler.addNerfedCraftingRecipe(outputStack, craftingPattern, additionalMaterials);
         }
     }
 }

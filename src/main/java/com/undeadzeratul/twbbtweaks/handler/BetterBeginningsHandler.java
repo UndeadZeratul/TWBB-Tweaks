@@ -174,7 +174,7 @@ public class BetterBeginningsHandler
         {
             ItemArmor armor = (ItemArmor) outputStack.getItem();
 
-            addNerfedRecipe(outputStack,
+            addNerfedCraftingRecipe(outputStack,
                             buildArmorCraftingPattern(armor, craftingMaterial),
                             buildAdditionalArmorMaterials(armor, extraMaterial));
         }
@@ -289,7 +289,7 @@ public class BetterBeginningsHandler
     {
         if (craftingMaterial != null && extraMaterial != null && outputStack != null)
         {
-            addNerfedRecipe(outputStack,
+            addNerfedCraftingRecipe(outputStack,
                             buildToolCraftingPattern(outputStack.getItem(), craftingMaterial, handleMaterial),
                             buildAdditionalToolMaterials(outputStack.getItem(), extraMaterial));
         }
@@ -541,7 +541,7 @@ public class BetterBeginningsHandler
         advCraftingInstance.addAdvancedRecipe(outputStack, additionalMaterials, craftingPattern);
     }
 
-    public static void removeNerfedRecipes (final ItemStack outputStack)
+    public static void removeNerfedCraftingRecipes (final ItemStack outputStack)
     {
         Iterator<AdvancedRecipe> iter = advCraftingInstance.getRecipeList().iterator();
 
