@@ -409,7 +409,7 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
                             ANY_BRASS_NUGGET, 5,
                             new ItemStack(leatherStrip, 3),
                             new ItemStack(woolBlock, 2, OreDictionary.WILDCARD_VALUE)
-                        });
+                        }, true);
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorBody")),
                         new Object[] {
                             "t t",
@@ -426,7 +426,7 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
                             ANY_BRASS_NUGGET, 8,
                             new ItemStack(leatherStrip, 2),
                             new ItemStack(woolBlock, 4, OreDictionary.WILDCARD_VALUE)
-                        });
+                        }, true);
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorLegs")),
                         new Object[] {
                             "pip",
@@ -443,7 +443,7 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
                             ANY_BRASS_NUGGET, 8,
                             new ItemStack(leatherStrip, 4),
                             new ItemStack(woolBlock, 1, OreDictionary.WILDCARD_VALUE)
-                        });
+                        }, true);
         nerfArmorRecipe(new ItemStack(GameRegistry.findItem(ModIds.FSP, "exoArmorFeet")),
                         new Object[] {
                             "t t",
@@ -457,7 +457,7 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
                             ANY_BRASS_NUGGET, 4,
                             new ItemStack(leatherStrip, 2),
                             new ItemStack(woolBlock, 3, OreDictionary.WILDCARD_VALUE)
-                        });
+                        }, true);
     }
 
     private static void nerfHarvestcraftArmor ()
@@ -669,10 +669,19 @@ public class ArmorRecipeTweaks extends AbstractBBTweaks
     private static void nerfArmorRecipe (final ItemStack outputStack, final Object craftingMaterial,
                                          final Object additionalMaterials)
     {
-        if (!BetterBeginningsHandler.advCraftingRecipeExists(outputStack) &&
-            CraftingRecipeHandler.craftingRecipeExists(outputStack))
+        nerfArmorRecipe(outputStack, craftingMaterial, additionalMaterials, false);
+    }
+
+    private static void nerfArmorRecipe (final ItemStack outputStack, final Object craftingMaterial,
+                                         final Object additionalMaterials, final boolean forceCraft)
+    {
+        if (CraftingRecipeHandler.craftingRecipeExists(outputStack))
         {
             CraftingRecipeHandler.removeCraftingRecipes(outputStack);
+        }
+
+        if (!BetterBeginningsHandler.advCraftingRecipeExists(outputStack) || forceCraft)
+        {
             BetterBeginningsHandler.addNerfedArmorRecipe(outputStack, craftingMaterial, additionalMaterials);
         }
     }

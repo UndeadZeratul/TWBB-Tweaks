@@ -208,7 +208,7 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
                        new Object[] {
                            ANY_BRASS_NUGGET, 6,
                            new ItemStack(leatherStrip, 3)
-                       });
+                       }, true);
 
         // Steam Axe
         ItemStack steamAxe = new ItemStack(GameRegistry.findItem(ModIds.FSP, "steamAxe"));
@@ -252,7 +252,7 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
                        new Object[] {
                            ANY_BRASS_NUGGET, 6,
                            new ItemStack(leatherStrip, 3)
-                       });
+                       }, true);
 
         // Steam Shovel
         ItemStack steamShovel = new ItemStack(GameRegistry.findItem(ModIds.FSP, "steamShovel"));
@@ -296,7 +296,7 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
                        new Object[] {
                            ANY_BRASS_NUGGET, 2,
                            new ItemStack(leatherStrip, 3)
-                       });
+                       }, true);
     }
 
     private static void nerfHammerzTools ()
@@ -686,10 +686,20 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
     private static void nerfToolRecipe (final ItemStack outputStack, final Object craftingMaterial,
                                         final Object handleMaterial, final Object additionalMaterials)
     {
-        if (!BetterBeginningsHandler.advCraftingRecipeExists(outputStack) &&
-            CraftingRecipeHandler.craftingRecipeExists(outputStack))
+        nerfToolRecipe(outputStack, craftingMaterial, handleMaterial, additionalMaterials, false);
+    }
+
+    private static void nerfToolRecipe (final ItemStack outputStack, final Object craftingMaterial,
+                                        final Object handleMaterial, final Object additionalMaterials,
+                                        final boolean forceCraft)
+    {
+        if (CraftingRecipeHandler.craftingRecipeExists(outputStack))
         {
             CraftingRecipeHandler.removeCraftingRecipes(outputStack);
+        }
+
+        if (!BetterBeginningsHandler.advCraftingRecipeExists(outputStack) || forceCraft)
+        {
             BetterBeginningsHandler.addNerfedToolRecipe(outputStack, craftingMaterial, handleMaterial,
                                                         additionalMaterials);
         }

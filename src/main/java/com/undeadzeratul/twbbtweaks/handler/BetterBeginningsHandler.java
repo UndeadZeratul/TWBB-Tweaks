@@ -535,7 +535,16 @@ public class BetterBeginningsHandler
         }
     }
 
-    public static void addNerfedRecipe (final ItemStack outputStack, final Object[] craftingPattern,
+    public static void addNerfedKilnRecipe (final ItemStack inputStack, final ItemStack outputStack,
+                                            final float experience)
+    {
+        if (inputStack != null && outputStack != null)
+        {
+            kilnRecipeInstance.addRecipe(inputStack, outputStack, experience);
+        }
+    }
+
+    public static void addNerfedCraftingRecipe (final ItemStack outputStack, final Object[] craftingPattern,
                                         final Object[] additionalMaterials)
     {
         advCraftingInstance.addAdvancedRecipe(outputStack, additionalMaterials, craftingPattern);

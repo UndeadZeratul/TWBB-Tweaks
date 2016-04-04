@@ -3,9 +3,7 @@ package com.undeadzeratul.twbbtweaks.handler;
 import static com.undeadzeratul.twbbtweaks.reference.Reference.MOD_ID;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -13,16 +11,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.nincraft.nincraftlib.utility.LogHelper;
 import com.undeadzeratul.twbbtweaks.reference.ConfigurationTwbbTweaks;
 import com.undeadzeratul.twbbtweaks.reference.Settings;
-import com.undeadzeratul.twbbtweaks.tweaks.wrapper.MeltingRecipeWrapper;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class ConfigurationHandler
 {
@@ -73,8 +65,14 @@ public class ConfigurationHandler
         Settings.TConstruct.adjustToolPartCosts = configuration
                 .getBoolean("adjustToolPartCosts", category, true,
                             "Set this to true to alter the TiC tool part costs across the board.");
-        Settings.TConstruct.newMeltingRecipes = parseNewMeltingRecipesConfig(category, "newMeltingRecipes");
-        Settings.TConstruct.alloyRatios = parseAlloyRatiosConfig(category, "alloyRatios");
+        Settings.TConstruct.newMeltingRecipes = configuration
+                .getStringList("newMeltingRecipes", category, new String[0],
+                               "Provide a list of items that can be melted down in the Smeltery/High Oven and their corresponding fluid, melting point, and block to display,"
+                               + "in the format 'modId|itemName|metadata|fluidName|amount|temperature|modId|blockName|metadata'.");
+        Settings.TConstruct.alloyRatios = configuration
+                .getStringList("alloyRatios", category, new String[0],
+                               "Provide a list of fluid dictionary names, their amount in mBs, and a list of other fluid dictioanry names and their amounts in mBs that will mix together in a TiC Smeltery,"
+                               + "in the format 'fluidName|amount|fluidName|amount|fluidName|amount'.");
         Settings.TConstruct.meltingTemps = parseMeltingTempsConfig(category, "meltingTemps");
         Settings.TConstruct.toolPartCosts = parseToolPartCostsConfig(category, "toolPartCosts");
     }
@@ -114,122 +112,6 @@ public class ConfigurationHandler
         Settings.BetterBeginnings.nerfAllKilnRecipes = configuration
                 .getBoolean("nerfAllKilnRecipes", category, true,
                             "Set this to true to nerf other random recipes to require the advanced crafting table.");
-    }
-
-    private static List<MeltingRecipeWrapper> parseNewMeltingRecipesConfig (final String category, final String key)
-    {
-        List<MeltingRecipeWrapper> recipeList = new ArrayList<MeltingRecipeWrapper>();
-
-        for (String entry : configuration.getStringList(key, category, new String[0],
-                                                        "Provide a list of items that can be melted down " +
-                                                        "in the Smeltery/High Oven and their corresponding fluid, melting point, and block to display," +
-                                                        "in the format 'modId|itemName|metadata|fluidName|amount|temperature|modId|blockName|metadata'."))
-        {
-            String[] entryData = entry.split(DELIMITER_REGEX);
-
-            if (ArrayUtils.isNotEmpty(entryData))
-            {
-                MeltingRecipeWrapper recipe = new MeltingRecipeWrapper();
-
-                switch (entryData.length)
-                {
-                    // modId|itemName|metadata|fluidName|amount|temperature|modId|blockName|metadata
-                    case 9:
-                        recipe.setInput(new ItemStack(GameRegistry.findItem(entryData[0], entryData[1]),
-                                                      1, Integer.valueOf(entryData[2])));
-                        recipe.setOutput(FluidRegistry.getFluidStack(entryData[3], Integer.valueOf(entryData[4])));
-                        recipe.setMeltingPoint(Integer.valueOf(entryData[5]));
-                        recipe.setBlock(new ItemStack(GameRegistry.findItem(entryData[6], entryData[7]),
-                                                      1, Integer.valueOf(entryData[8])));
-                        recipeList.add(recipe);
-                        break;
-                    // modId|itemName|fluidName|amount|temperature|modId|blockName|metadata
-                    case 8:
-                        recipe.setInput(new ItemStack(GameRegistry.findItem(entryData[0], entryData[1]),
-                                                      1, OreDictionary.WILDCARD_VALUE));
-                        recipe.setOutput(FluidRegistry.getFluidStack(entryData[2], Integer.valueOf(entryData[3])));
-                        recipe.setMeltingPoint(Integer.valueOf(entryData[4]));
-                        recipe.setBlock(new ItemStack(GameRegistry.findItem(entryData[5], entryData[6]),
-                                                      1, Integer.valueOf(entryData[7])));
-                        recipeList.add(recipe);
-                        break;
-                    // oreDictName|fluidName|amount|temperature|modId|blockName|metadata
-                    case 7:
-                        if (OreDictionary.doesOreNameExist(entryData[0]))
-                        {
-                            for (ItemStack oreStack : OreDictionary.getOres(entryData[0]))
-                            {
-                                recipe.setInput(oreStack);
-                                recipe.setOutput(FluidRegistry.getFluidStack(entryData[1], Integer.valueOf(entryData[2])));
-                                recipe.setMeltingPoint(Integer.valueOf(entryData[3]));
-                                recipe.setBlock(new ItemStack(GameRegistry.findItem(entryData[4], entryData[5]),
-                                                              1, Integer.valueOf(entryData[6])));
-                                recipeList.add(recipe);
-                            }
-                        }
-                        break;
-                    // ayy lmao
-                    default:
-                        LogHelper.warn(String.format("Invalid config option: %s", String.join("|", entryData)));
-                        break;
-                }
-            }
-        }
-
-        return recipeList;
-    }
-
-    private static Map<FluidStack, List<FluidStack>> parseAlloyRatiosConfig (final String category, final String key)
-    {
-        Map<FluidStack, List<FluidStack>> map = new HashMap<FluidStack, List<FluidStack>>();
-
-        for (final String entry : configuration
-                .getStringList(key, category,
-                               new String[0], "Provide a list of fluid dictionary names, their amount in mBs, " +
-                                              "and a list of other fluid dictioanry names and their amounts in mBs " +
-                                              "that will mix together in a TiC Smeltery," +
-                                              "in the format 'fluidName|amount|fluidName|amount|fluidName|amount'."))
-        {
-            String[] entryData = entry.split(DELIMITER_REGEX);
-
-            if (ArrayUtils.isNotEmpty(entryData))
-            {
-                // Alloys need at least one output and two inputs,
-                // so 3 sets of 2 values, or a even length of at least 6.
-                if (entryData.length > 5 && entryData.length % 2 == 0)
-                {
-                    if (FluidRegistry.isFluidRegistered(entryData[0]))
-                    {
-                        FluidStack output = FluidRegistry.getFluidStack(entryData[0], Integer.valueOf(entryData[1]));
-                        List<FluidStack> inputs = new ArrayList<FluidStack>();
-
-                        // Skip past the first two, which represent the output,
-                        // to get to the list of inputs.
-                        for (int i = 2; i + 1 < entryData.length; i += 2)
-                        {
-                            if (FluidRegistry.isFluidRegistered(entryData[i]))
-                            {
-                                inputs.add(FluidRegistry.getFluidStack(entryData[i],
-                                                                       Integer.valueOf(entryData[i + 1])));
-                            }
-                        }
-
-                        // Only register the alloy if the output fluid
-                        // as well as the list of input fluids are valid.
-                        if (output != null && inputs.size() > 1)
-                        {
-                            map.put(output, inputs);
-                        }
-                    }
-                }
-                else
-                {
-                    LogHelper.warn(String.format("Invalid config option: %s", entryData[0]));
-                }
-            }
-        }
-
-        return map;
     }
 
     private static Map<String, Integer> parseMeltingTempsConfig (final String category, final String configKey)
