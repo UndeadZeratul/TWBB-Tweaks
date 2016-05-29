@@ -1,16 +1,11 @@
 package com.undeadzeratul.twbbtweaks;
 
-import static com.undeadzeratul.twbbtweaks.reference.Names.ModIds.TIC;
-import static com.undeadzeratul.twbbtweaks.reference.Reference.CLIENT_PROXY;
-import static com.undeadzeratul.twbbtweaks.reference.Reference.DEPENDENCIES;
-import static com.undeadzeratul.twbbtweaks.reference.Reference.GUI_FACTORY_CLASS;
-import static com.undeadzeratul.twbbtweaks.reference.Reference.MOD_ID;
-import static com.undeadzeratul.twbbtweaks.reference.Reference.MOD_NAME;
-import static com.undeadzeratul.twbbtweaks.reference.Reference.SERVER_PROXY;
-import static com.undeadzeratul.twbbtweaks.reference.Reference.VERSION;
-
 import com.undeadzeratul.twbbtweaks.handler.ConfigurationHandler;
 import com.undeadzeratul.twbbtweaks.proxy.IProxy;
+import com.undeadzeratul.twbbtweaks.reference.Names.ModIds;
+import com.undeadzeratul.twbbtweaks.reference.Reference;
+import com.undeadzeratul.twbbtweaks.tweaks.BetterBeginningsTweaks;
+import com.undeadzeratul.twbbtweaks.tweaks.CraftingRecipeTweaks;
 import com.undeadzeratul.twbbtweaks.tweaks.OreDictionaryRegister;
 import com.undeadzeratul.twbbtweaks.tweaks.TConstructTweaks;
 import com.undeadzeratul.twbbtweaks.utility.LogHelper;
@@ -25,18 +20,19 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 /**
  * @author Undead_Zeratul
  */
-@Mod (modid = MOD_ID, name = MOD_NAME, version = VERSION, guiFactory = GUI_FACTORY_CLASS, dependencies = DEPENDENCIES)
+@Mod (modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION,
+      guiFactory = Reference.GUI_FACTORY_CLASS, dependencies = Reference.DEPENDENCIES)
 public class TwbbTweaks
 {
-    @Mod.Instance (MOD_ID)
+    @Mod.Instance (Reference.MOD_ID)
     public static TwbbTweaks instance;
 
-    @SidedProxy (clientSide = CLIENT_PROXY, serverSide = SERVER_PROXY)
+    @SidedProxy (clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
     public static IProxy     proxy;
 
     /**
      * Pre-Init
-     * 
+     *
      * @param event
      */
     @Mod.EventHandler
@@ -52,7 +48,7 @@ public class TwbbTweaks
 
     /**
      * Init
-     * 
+     *
      * @param event
      */
     @Mod.EventHandler
@@ -63,21 +59,34 @@ public class TwbbTweaks
 
     /**
      * Post-Init
-     * 
+     *
      * @param event
      */
     @Mod.EventHandler
     public void postInit (final FMLPostInitializationEvent event)
     {
+        CraftingRecipeTweaks.init();
+
+        initBetterBeginningsCompat();
         initTConstructCompat();
         LogHelper.info("Post-Init Complete");
     }
 
     private void initTConstructCompat ()
     {
-        if (Loader.isModLoaded(TIC))
+        if (Loader.isModLoaded(ModIds.TIC))
         {
+            LogHelper.info("Initializing Tinkers' Construt Tweaks");
             TConstructTweaks.init();
+        }
+    }
+
+    private void initBetterBeginningsCompat ()
+    {
+        if (Loader.isModLoaded(ModIds.BETTER_BEGINNINGS))
+        {
+            LogHelper.info("Initializing Better Beginnings Tweaks");
+            BetterBeginningsTweaks.init();
         }
     }
 }

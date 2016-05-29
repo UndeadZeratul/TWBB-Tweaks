@@ -1,18 +1,12 @@
 package com.undeadzeratul.twbbtweaks.tweaks;
 
-import static net.minecraftforge.oredict.OreDictionary.WILDCARD_VALUE;
-import static net.minecraftforge.oredict.OreDictionary.getOres;
-import static net.minecraftforge.oredict.OreDictionary.registerOre;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.undeadzeratul.twbbtweaks.reference.Settings;
 import com.undeadzeratul.twbbtweaks.utility.LogHelper;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class OreDictionaryRegister
 {
@@ -41,29 +35,29 @@ public class OreDictionaryRegister
         {
             case 2:
                 // OreDictFrom|oreDictTo
-                LogHelper.info(String.format("Registering all items under {} as {}", entryData[0], entryData[1]));
+                LogHelper.info(String.format("Registering all items under %s as %s", entryData[0], entryData[1]));
 
-                for (final ItemStack ore : getOres(entryData[0]))
+                for (final ItemStack ore : OreDictionary.getOres(entryData[0]))
                 {
-                    registerOre(entryData[1], ore);
+                    OreDictionary.registerOre(entryData[1], ore);
                 }
                 break;
             case 3:
                 // ModId|ItemName|OreDict
-                LogHelper.info(String.format("Registering item {}:{} as {}", entryData[0], entryData[1], entryData[2]));
+                LogHelper.info(String.format("Registering item %s:%s as %s", entryData[0], entryData[1], entryData[2]));
 
-                registerEntry(buildItemName(entryData), WILDCARD_VALUE, entryData[2]);
+                registerEntry(buildItemName(entryData), OreDictionary.WILDCARD_VALUE, entryData[2]);
                 break;
             case 4:
                 // ModId|ItemName|Metadata|OreDict
-                LogHelper.info(String.format("Registering item {}:{}:{} as {}", entryData[0], entryData[1],
+                LogHelper.info(String.format("Registering item %s:%s:%s as %s", entryData[0], entryData[1],
                                              entryData[2], entryData[3]));
 
                 registerEntry(buildItemName(entryData), parseMetadata(entryData[2]), entryData[3]);
                 break;
             default:
                 // lolidk wut u did.
-                LogHelper.warn(String.format("Unknown Config Value: {}", String.join(DELIMITER, entryData)));
+                LogHelper.warn(String.format("Unknown Config Value: %s", String.join(DELIMITER, entryData)));
                 break;
         }
     }
@@ -75,7 +69,7 @@ public class OreDictionaryRegister
 
     private static void registerEntry (final String itemName, final int metadata, final String oreDictEntry)
     {
-        registerOre(oreDictEntry, GameRegistry.makeItemStack(itemName, metadata, 0, ""));
+        OreDictionary.registerOre(oreDictEntry, GameRegistry.makeItemStack(itemName, metadata, 0, ""));
     }
 
     private static int parseMetadata (final String input)
@@ -86,7 +80,7 @@ public class OreDictionaryRegister
         }
         catch (NumberFormatException nfe)
         {
-            return WILDCARD_VALUE;
+            return OreDictionary.WILDCARD_VALUE;
         }
     }
 

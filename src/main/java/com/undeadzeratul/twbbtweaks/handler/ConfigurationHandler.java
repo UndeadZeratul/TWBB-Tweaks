@@ -34,6 +34,7 @@ public class ConfigurationHandler
     {
         loadTweakConfigs(ConfigurationTwbbTweaks.CATEGORY_TWEAKS);
         loadTConstructConfigs(ConfigurationTwbbTweaks.CATEGORY_TCONSTRUCT);
+        loadBetterBeginningsConfigs(ConfigurationTwbbTweaks.CATEGORY_BETTER_BEGINNINGS);
 
         if (configuration.hasChanged())
         {
@@ -43,23 +44,74 @@ public class ConfigurationHandler
 
     private static void loadTweakConfigs (final String category)
     {
-        Settings.Tweaks.oreDictionaryAdditions = configuration.getStringList("oreDictionaryAdditions", category,
-                                                                             new String[]
-        {}, "Add items to the ore dictionary formatted as modID|itemName|Metadata|oreDictionaryName");
+        Settings.Tweaks.disabledItems = configuration
+                .getStringList("disabledItems", category, new String[0],
+                               "Disable items by removing their crafting recipe(s), formatted as 'modID|itemName|metadata'.");
+        Settings.Tweaks.oreDictionaryAdditions = configuration
+                .getStringList("oreDictionaryAdditions", category, new String[0],
+                               "Add items to the ore dictionary formatted as 'modID|itemName|metadata|oreDictionaryName'.");
     }
 
     private static void loadTConstructConfigs (final String category)
     {
         Settings.TConstruct.enableTiCTweaks = configuration.getBoolean("enableTiCTweaks", category, true,
                                                                        "This will enable/disable all TiC tweaks.");
+        Settings.TConstruct.adjustAlloyRatios = configuration
+                .getBoolean("adjustAlloyRatios", category, true,
+                            "Set this to true to alter the list of fluids used to mix together into new alloys.");
         Settings.TConstruct.adjustMeltingTemps = configuration
                 .getBoolean("adjustMeltingTemps", category, true,
                             "Set this to true to alter the melting temperatures for various molten metals in the TiC smeltery.");
         Settings.TConstruct.adjustToolPartCosts = configuration
                 .getBoolean("adjustToolPartCosts", category, true,
                             "Set this to true to alter the TiC tool part costs across the board.");
+        Settings.TConstruct.newMeltingRecipes = configuration
+                .getStringList("newMeltingRecipes", category, new String[0],
+                               "Provide a list of items that can be melted down in the Smeltery/High Oven and their corresponding fluid, melting point, and block to display,"
+                               + "in the format 'modId|itemName|metadata|fluidName|amount|temperature|modId|blockName|metadata'.");
+        Settings.TConstruct.alloyRatios = configuration
+                .getStringList("alloyRatios", category, new String[0],
+                               "Provide a list of fluid dictionary names, their amount in mBs, and a list of other fluid dictioanry names and their amounts in mBs that will mix together in a TiC Smeltery,"
+                               + "in the format 'fluidName|amount|fluidName|amount|fluidName|amount'.");
         Settings.TConstruct.meltingTemps = parseMeltingTempsConfig(category, "meltingTemps");
         Settings.TConstruct.toolPartCosts = parseToolPartCostsConfig(category, "toolPartCosts");
+    }
+
+    private static void loadBetterBeginningsConfigs (final String category)
+    {
+        Settings.BetterBeginnings.enableBBTweaks = configuration
+                .getBoolean("enableBBTweaks", category, true, "This will enable/disable all BetterBeginnings tweaks.");
+
+        loadBBRecipeNerfConfigs(category + ".recipeNerfs");
+    }
+
+    private static void loadBBRecipeNerfConfigs (final String category)
+    {
+        Settings.BetterBeginnings.nerfCraftingRecipes = configuration
+                .getBoolean("enableAllCraftingRecipeNerfs", category, true,
+                            "Set this to true to activate all recipe nerfs, making it so that any recipe nerfed will require the advanced crafting table.");
+        Settings.BetterBeginnings.nerfAllArmorRecipes = configuration
+                .getBoolean("nerfAllArmorRecipes", category, true,
+                            "Set this to true to nerf all armor recipes to require the advanced crafting table.");
+        Settings.BetterBeginnings.nerfAllToolRecipes = configuration
+                .getBoolean("nerfAllToolRecipes", category, true,
+                            "Set this to true to nerf all tool recipes to require the advanced crafting table.");
+        Settings.BetterBeginnings.nerfAllMiscRecipes = configuration
+                .getBoolean("nerfAllMiscRecipes", category, true,
+                            "Set this to true to nerf other random recipes to require the advanced crafting table.");
+
+        Settings.BetterBeginnings.nerfAllCookingRecipes = configuration
+                .getBoolean("nerfAllCookingRecipes", category, true,
+                            "Set this to true to nerf various cooking recipes to require the brick oven, campfire, or kiln.");
+        Settings.BetterBeginnings.nerfAllBrickOvenRecipes = configuration
+                .getBoolean("nerfAllBrickOvenRecipes", category, true,
+                            "Set this to true to nerf other random recipes to require the advanced crafting table.");
+        Settings.BetterBeginnings.nerfAllCampfireRecipes = configuration
+                .getBoolean("nerfAllCampfireRecipes", category, true,
+                            "Set this to true to nerf other random recipes to require the advanced crafting table.");
+        Settings.BetterBeginnings.nerfAllKilnRecipes = configuration
+                .getBoolean("nerfAllKilnRecipes", category, true,
+                            "Set this to true to nerf other random recipes to require the advanced crafting table.");
     }
 
     private static Map<String, Integer> parseMeltingTempsConfig (final String category, final String configKey)
@@ -116,7 +168,7 @@ public class ConfigurationHandler
                 }
                 else
                 {
-                    LogHelper.warn(String.format("Invalid config option: {}", entryData[0]));
+                    LogHelper.warn(String.format("Invalid config option: %s", entryData[0]));
                 }
             }
         }
