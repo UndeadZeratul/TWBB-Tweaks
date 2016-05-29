@@ -21,16 +21,16 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ToolRecipeTweaks extends AbstractBBTweaks
 {
-    private static final String ANY_BLAZE_RON    = "itemBlazeRod";
-    private static final Object ANY_BRASS_INGOT  = "ingotBrass";
-    private static final Object ANY_BRASS_NUGGET = "nuggetBrass";
-    private static final Object ANY_BRASS_PLATE  = "plateSteamcraftBrass";
-    private static final String ANY_IRON_ROD     = "rodIron";
-    private static final String ANY_OBSIDIAN_ROD = "rodObsidian";
-    private static final String ANY_STICK        = "stickWood";
-    private static final Object ANY_STEEL_INGOT  = "ingotSteel";
-    private static final Object ANY_STEEL_NUGGET = "nuggetSteel";
-    private static final String ANY_STRING       = "itemString";
+    private static final Object ANY_ALUMINUM_INGOT  = "ingotAluminum";
+    private static final Object ANY_ALUMINUM_NUGGET = "nuggetAluminum";
+    private static final String ANY_BLAZE_RON       = "itemBlazeRod";
+    private static final Object ANY_BRASS_INGOT     = "ingotBrass";
+    private static final Object ANY_BRASS_NUGGET    = "nuggetBrass";
+    private static final Object ANY_BRASS_PLATE     = "plateSteamcraftBrass";
+    private static final String ANY_IRON_ROD        = "rodIron";
+    private static final String ANY_OBSIDIAN_ROD    = "rodObsidian";
+    private static final String ANY_STICK           = "stickWood";
+    private static final String ANY_STRING          = "itemString";
 
     private static Item         leatherStrip;
     private static Item         naturaItem;
@@ -165,7 +165,7 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
                        kreknoriteIngot, ANY_OBSIDIAN_ROD, new ItemStack(naturaItem, 2, 7));
     }
 
-    private void nerfFSPTools ()
+    private static void nerfFSPTools ()
     {
         ItemStack brassPipe = new ItemStack(GameRegistry.findItem(ModIds.FSP, "pipe"));
         ItemStack brassTurbine = new ItemStack(GameRegistry.findItem(ModIds.FSP, "steamcraftCrafting"), 1, 5);
@@ -181,7 +181,7 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
                            'b',
                            ANY_BRASS_INGOT,
                            's',
-                           ANY_STEEL_INGOT,
+                           ANY_ALUMINUM_INGOT,
                            'p',
                            brassPipe,
                            't',
@@ -199,7 +199,7 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
                            'b',
                            ANY_BRASS_PLATE,
                            's',
-                           ANY_STEEL_INGOT,
+                           ANY_ALUMINUM_INGOT,
                            'p',
                            brassPipe,
                            't',
@@ -221,9 +221,9 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
                            'b',
                            ANY_BRASS_INGOT,
                            'n',
-                           ANY_STEEL_NUGGET,
+                           ANY_ALUMINUM_NUGGET,
                            's',
-                           ANY_STEEL_INGOT,
+                           ANY_ALUMINUM_INGOT,
                            'p',
                            brassPipe,
                            't',
@@ -241,9 +241,9 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
                            'b',
                            ANY_BRASS_PLATE,
                            'n',
-                           ANY_STEEL_NUGGET,
+                           ANY_ALUMINUM_NUGGET,
                            's',
-                           ANY_STEEL_INGOT,
+                           ANY_ALUMINUM_INGOT,
                            'p',
                            brassPipe,
                            't',
@@ -265,9 +265,9 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
                            'b',
                            ANY_BRASS_INGOT,
                            'n',
-                           ANY_STEEL_NUGGET,
+                           ANY_ALUMINUM_NUGGET,
                            's',
-                           ANY_STEEL_INGOT,
+                           ANY_ALUMINUM_INGOT,
                            'p',
                            brassPipe,
                            't',
@@ -285,9 +285,9 @@ public class ToolRecipeTweaks extends AbstractBBTweaks
                            'b',
                            ANY_BRASS_PLATE,
                            'n',
-                           ANY_STEEL_NUGGET,
+                           ANY_ALUMINUM_NUGGET,
                            's',
-                           ANY_STEEL_INGOT,
+                           ANY_ALUMINUM_INGOT,
                            'p',
                            brassPipe,
                            't',
